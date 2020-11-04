@@ -592,6 +592,7 @@ MonoBehaviour:
   target: {fileID: 1434754512}
   offset: {x: 0, y: 0, z: 0}
   useOffsetValues: 0
+  rotateSpeed: 5
 --- !u!1 &1205661693
 GameObject:
   m_ObjectHideFlags: 0
