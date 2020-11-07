@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public float gravityScale;
 
     private Vector3 moveDirection;
-
+    public Animator anim;
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
 
         moveDirection.y = moveDirection.y + (Physics.gravity.y * gravityScale * Time.deltaTime);
         controller.Move(moveDirection * Time.deltaTime);
-    
+
+        anim.SetBool("isGrounded", controller.isGrounded);
+        anim.SetFloat("speed", (Mathf.Abs(Input.GetAxis("Vertical")) + Mathf.Abs(Input.GetAxis("Horizontal"))));
     }
 }
