@@ -220,7 +220,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 4
   currentHealth: 4
-  thePlayer: {fileID: 0}
+  thePlayer: {fileID: 1434754514}
+  invincibilityLength: 2
+  playerRenderer: {fileID: 1442113560}
+  flashLength: 0.1
 --- !u!1 &354125598 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 520566237436290932, guid: 88a6f849d9e140c4687ae3645f462639,
@@ -1126,6 +1129,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 667656105af0b7f438fb171cedbed64e, type: 2}
+    - target: {fileID: 7205140776170859923, guid: 5f15a830b6af06341becc05dfc34160e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7388940433113497130, guid: 5f15a830b6af06341becc05dfc34160e,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2425,6 +2433,12 @@ MonoBehaviour:
   playerModel: {fileID: 586633790}
   knockBackForce: 5
   knockBackTime: 1
+--- !u!137 &1442113560 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7205140776170859923, guid: 5f15a830b6af06341becc05dfc34160e,
+    type: 3}
+  m_PrefabInstance: {fileID: 586633788}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1501477618
 GameObject:
   m_ObjectHideFlags: 0
