@@ -57,14 +57,15 @@ public class PlayerController : MonoBehaviour
         controller.Move(moveDirection * Time.deltaTime);
         //move the player in different directions based on camera look direction
 
-        if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        if(Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
-            transform.rotation = Quaternion.Euler(0f, pivot.rotation.eulerAngles.y,0f);
-            Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 0f, moveDirection.z));
+            transform.rotation = Quaternion.Euler(0f, pivot.rotation.eulerAngles.y, 0f);
+            Quaternion newRotation = Quaternion.LookRotation(new Vector3 (moveDirection.x, 0f, moveDirection.z));
             playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
         }
+        
         anim.SetBool("isGrounded", controller.isGrounded);
-        anim.SetFloat("speed", (Mathf.Abs(Input.GetAxis("Vertical")) + Mathf.Abs(Input.GetAxis("Horizontal"))));
+        anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal"))));
 
 
     }
