@@ -17,19 +17,25 @@ public class HealthManager : MonoBehaviour
     private float flashCounter;
     public float flashLength = 0.1f;
 
+    private bool isRespawning;
+    private Vector3 respawnPoint;
+    public float respawnLength;
+
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
 
-        thePlayer = FindObjectOfType<PlayerController>();
+        //thePlayer = FindObjectOfType<PlayerController>();
+
+        respawnPoint = thePlayer.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if(invincibilityCounter > 0)
+        if (invincibilityCounter > 0)
         {
             invincibilityCounter -= Time.deltaTime;
 
@@ -40,7 +46,7 @@ public class HealthManager : MonoBehaviour
                 flashCounter = flashLength;
             }
 
-            if(invincibilityCounter <= 0)
+            if (invincibilityCounter <= 0)
             {
                 playerRenderer.enabled = true;
             }
@@ -49,18 +55,59 @@ public class HealthManager : MonoBehaviour
 
     public void HurtPlayer(int damage, Vector3 direction)
     {
-        if(invincibilityCounter <= 0)
+        if (invincibilityCounter <= 0)
         {
             currentHealth -= damage;
 
-            thePlayer.KnockBack(direction);
+            if (currentHealth <= 0)
+            {
+                Respawn();
+            }
+            else
+            {
+                thePlayer.KnockBack(direction);
 
-            invincibilityCounter = invincibilityLength;
+                invincibilityCounter = invincibilityLength;
 
-            playerRenderer.enabled = false;
-            flashCounter = flashLength;
+                playerRenderer.enabled = false;
+                flashCounter = flashLength;
+            }
+
+        }
+
+    }
+
+    public void Respawn()
+    {
+
+        if(!isRespawning)
+        {
+            StartCoroutine("RespawnCo");
         }
         
+
+    }
+
+    public IEnumerator RespawnCo()
+    {
+        isRespawning = true;
+        thePlayer.gameObject.SetActive(false);
+        yield return new WaitForSeconds(respawnLength);
+        isRespawning = false;
+
+        thePlayer.gameObject.SetActive(true);
+
+        GameObject player = GameObject.Find("Player");
+        CharacterController charController = player.GetComponent<CharacterController>();
+        charController.enabled = false;
+        player.transform.position = respawnPoint;
+        charController.enabled = true;
+
+        currentHealth = maxHealth;
+
+        invincibilityCounter = invincibilityLength;
+        playerRenderer.enabled = false;
+        flashCounter = flashLength;
     }
 
     public void HealPlayer(int healAmount)

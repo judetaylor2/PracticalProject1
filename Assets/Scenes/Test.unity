@@ -224,6 +224,7 @@ MonoBehaviour:
   invincibilityLength: 2
   playerRenderer: {fileID: 1442113560}
   flashLength: 0.1
+  respawnLength: 2
 --- !u!1 &354125598 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 520566237436290932, guid: 88a6f849d9e140c4687ae3645f462639,
