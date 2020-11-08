@@ -220,6 +220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 4
   currentHealth: 4
+  thePlayer: {fileID: 0}
 --- !u!1 &354125598 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 520566237436290932, guid: 88a6f849d9e140c4687ae3645f462639,
@@ -2422,6 +2423,8 @@ MonoBehaviour:
   pivot: {fileID: 1501477619}
   rotateSpeed: 10
   playerModel: {fileID: 586633790}
+  knockBackForce: 5
+  knockBackTime: 1
 --- !u!1 &1501477618
 GameObject:
   m_ObjectHideFlags: 0
