@@ -25,4 +25,6 @@ public class GameManager : MonoBehaviour
         currentGold += goldToAdd;
         goldText.text = "Gold: " + currentGold;
     }
+
+
 }

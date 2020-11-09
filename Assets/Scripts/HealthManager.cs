@@ -29,10 +29,13 @@ public class HealthManager : MonoBehaviour
     public float fadeSpeed;
     public float waitForFade;
 
+    //GoldPickup gold;
+
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
+
 
         //thePlayer = FindObjectOfType<PlayerController>();
 
@@ -109,6 +112,10 @@ public class HealthManager : MonoBehaviour
         if(!isRespawning)
         {
             StartCoroutine("RespawnCo");
+
+            //gold = GameObject.FindGameObjectWithTag("Gold Respawn").GetComponent<GoldPickup>();
+
+            //gold.replaceGold(gameObject);
         }
         
 
@@ -154,6 +161,7 @@ public class HealthManager : MonoBehaviour
         if(currentHealth > maxHealth)
         {
             currentHealth = maxHealth;
-        }    
+        }
+
     }
 }

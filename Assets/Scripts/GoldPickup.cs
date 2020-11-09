@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Security.Cryptography;
 using UnityEngine;
 
@@ -31,5 +32,14 @@ public class GoldPickup : MonoBehaviour
             Instantiate(pickupEffect, transform.position, transform.rotation);
             Destroy(gameObject);
         }
+     
+       
     }
+
+
+    /*public void replaceGold(GameObject object1)
+    {
+        Instantiate(gameObject);
+    }*/
 }
+
