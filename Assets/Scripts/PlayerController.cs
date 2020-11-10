@@ -10,7 +10,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed;
-    //public Rigidbody theRB;
     public float jumpForce;
     public CharacterController controller;
     public float gravityScale;
