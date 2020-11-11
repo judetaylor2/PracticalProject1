@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
     public Transform target;
     public Vector3 offset;
     public bool useOffsetValues;
-    public float rotateSpeed;
+    public static float rotateSpeed;
     public Transform pivot;
     public float maxViewAngle;
     public float minViewAngle;
@@ -17,6 +17,8 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rotateSpeed = 5f;
+
         if(!useOffsetValues)
         {
             offset = target.position - transform.position;

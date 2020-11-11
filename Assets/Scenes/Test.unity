@@ -2223,7 +2223,6 @@ MonoBehaviour:
   target: {fileID: 1434754512}
   offset: {x: 0, y: 0, z: 0}
   useOffsetValues: 0
-  rotateSpeed: 5
   pivot: {fileID: 1501477619}
   maxViewAngle: 60
   minViewAngle: -65
@@ -3594,7 +3593,7 @@ MonoBehaviour:
   momentumIncrease: 0.02
   momentumDecrease: 1
   minMoveSpeed: 6
-  maxMoveSpeed: 12
+  maxMoveSpeed: 15
   anim: {fileID: 586633791}
   pivot: {fileID: 1501477619}
   rotateSpeed: 10
@@ -4292,12 +4291,17 @@ PrefabInstance:
     - target: {fileID: 8926742061374402820, guid: 272f3e098ddbcbb4cb7967165f72c22d,
         type: 3}
       propertyPath: m_Size.y
-      value: 2.5
+      value: 2.8687325
       objectReference: {fileID: 0}
     - target: {fileID: 8926742061374402820, guid: 272f3e098ddbcbb4cb7967165f72c22d,
         type: 3}
       propertyPath: m_Size.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8926742061374402820, guid: 272f3e098ddbcbb4cb7967165f72c22d,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.74200034
       objectReference: {fileID: 0}
     - target: {fileID: 9009821154615644398, guid: 272f3e098ddbcbb4cb7967165f72c22d,
         type: 3}

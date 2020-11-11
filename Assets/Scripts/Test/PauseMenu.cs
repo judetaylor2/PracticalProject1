@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
+    
     public static bool gameIsPaused = false;
     public GameObject pauseMenu;
     public Renderer playerRenderer;
@@ -40,8 +41,9 @@ public class PauseMenu : MonoBehaviour
         gameIsPaused = false;
         charController.enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
-
+        CameraController.rotateSpeed = 5f;
     }
+
     public void PauseGame()
     {
         pauseMenu.SetActive(true);
@@ -50,6 +52,8 @@ public class PauseMenu : MonoBehaviour
         playerRenderer.enabled = true;
         charController.enabled = false;
         Cursor.lockState = CursorLockMode.None;
+        CameraController.rotateSpeed = 0f;
+
 
     }
 
