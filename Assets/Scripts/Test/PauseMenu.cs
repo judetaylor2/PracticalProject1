@@ -9,7 +9,6 @@ public class PauseMenu : MonoBehaviour
     public static bool gameIsPaused = false;
     public GameObject pauseMenu;
     public Renderer playerRenderer;
-    public CharacterController charController;
     
     // Start is called before the first frame update
     void Start()
@@ -39,7 +38,6 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         gameIsPaused = false;
-        charController.enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
         CameraController.rotateSpeed = 5f;
     }
@@ -50,7 +48,6 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0f;
         gameIsPaused = true;
         playerRenderer.enabled = true;
-        charController.enabled = false;
         Cursor.lockState = CursorLockMode.None;
         CameraController.rotateSpeed = 0f;
 

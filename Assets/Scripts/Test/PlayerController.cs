@@ -28,6 +28,11 @@ public class PlayerController : MonoBehaviour
     public float knockBackForce;
     public float knockBackTime;
     private float knockBackCounter;
+
+    public bool unlockable1;
+
+    public int doubleJump;
+    public int secondJump;
     // Start is called before the first frame update (Will only happen once)
     void Start()
     {
@@ -57,15 +62,53 @@ public class PlayerController : MonoBehaviour
             }*/
 
             //make the player jump (Y)
+
             if (controller.isGrounded)
             {
-                moveDirection.y = 0f;
+                jumpForce = 10f;
+                doubleJump = 0;
+            }
 
-                if (Input.GetButtonDown("Jump"))
+            if (unlockable1)
+            {
+                if (doubleJump < 2)
                 {
-                    moveDirection.y = jumpForce;
+                
+
+                    if (Input.GetButtonDown("Jump"))
+                    {
+                        if(doubleJump == 1)
+                        {
+                            jumpForce = jumpForce + secondJump;
+                        }
+
+   
+                        //StartCoroutine(WaitForSeconds());
+                        moveDirection.y = jumpForce;
+                        doubleJump = (doubleJump + 1);
+                    }
+                }
+                else if (doubleJump >= 2)
+                {
+                    if (controller.isGrounded)
+                    {
+                        moveDirection.y = 0f;
+                        doubleJump = 0;
+                    }
                 }
             }
+            else
+            {
+                if (controller.isGrounded)
+                {
+                    if (Input.GetButtonDown("Jump"))
+                    {
+                        moveDirection.y = jumpForce;
+                        doubleJump = (doubleJump++);
+                    }
+                }
+            }
+
         }
         else
         {
@@ -103,6 +146,11 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isGrounded", controller.isGrounded);
         anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal")))); 
 
+
+        if (unlockable1)
+        {
+        
+        }
     }
 
     //player knockback
@@ -125,5 +173,27 @@ public class PlayerController : MonoBehaviour
         }
     }*/
 
+
+    public void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.name == "Unlockable1")
+        {
+            unlockable1 = true;
+
+            Time.timeScale = 0f;
+
+            if (Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                Time.timeScale = 1f;
+            }
+        }
+    }
+
+    public IEnumerator WaitForSeconds()
+    {
+        yield return new WaitForSeconds(5f);
+        
+    }
+       
 }
 
