@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
     public int doubleJump;
     public int secondJump;
+    public float jumpForceGround;
     // Start is called before the first frame update (Will only happen once)
     void Start()
     {
@@ -65,7 +66,7 @@ public class PlayerController : MonoBehaviour
 
             if (controller.isGrounded)
             {
-                jumpForce = 10f;
+                jumpForce = jumpForceGround;
                 doubleJump = 0;
             }
 
@@ -179,21 +180,14 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.name == "Unlockable1")
         {
             unlockable1 = true;
-
-            Time.timeScale = 0f;
-
-            if (Input.GetKeyDown(KeyCode.KeypadEnter))
-            {
-                Time.timeScale = 1f;
-            }
         }
     }
 
-    public IEnumerator WaitForSeconds()
+    /*public IEnumerator WaitForSeconds()
     {
         yield return new WaitForSeconds(5f);
         
-    }
+    }*/
        
 }
 
