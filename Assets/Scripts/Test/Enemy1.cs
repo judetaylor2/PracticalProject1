@@ -6,131 +6,46 @@ using UnityEngine.AI;
 public class Enemy1 : MonoBehaviour
 {
 
-    public NavMeshAgent agent;
+    public float lookRadius = 10f;
 
-    public Transform player;
-
-    public LayerMask whatIsGround, whatIsPlayer;
-
-    public GameObject projectile;
-
-
-    public Vector3 walkPoint;
-    bool walkPointSet;
-    public float walkPointRange;
-
-    public float timeBetweenAttacks;
-    public bool alreadyAttacked;
-
-    public float sightRange, attackRange;
-    public bool playerInSightRange, playerInAttackRange;
+    Transform target;
+    NavMeshAgent agent;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        target = PlayerManager.instance.player.transform;
+        agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+        float distance = Vector3.Distance(target.position, transform.position);
 
-        if (!playerInSightRange && !playerInAttackRange)
+        if (distance < lookRadius)
         {
-            Patrol();
-        }
+            agent.SetDestination(target.position);
 
-        if (playerInSightRange && !playerInAttackRange)
-        {
-            Chase();
-        }
-
-        if (playerInSightRange && playerInAttackRange)
-        {
-            AttackPlayer();
-        }
-
-    }
-
-    private void Awake()
-    {
-        player = GameObject.Find("Player").transform;
-        agent = GetComponent<NavMeshAgent>();
-    }
-
-    private void Patrol()
-    {
-        if (!walkPointSet)
-        {
-            SearchWalkPoint();
-        }
-
-        if (walkPointSet)
-        {
-            agent.SetDestination(walkPoint);
-        }
-
-        Vector3 distanceToWalkPoint = transform.position - walkPoint;
-
-        if (distanceToWalkPoint.magnitude < 1f)
-        {
-            walkPointSet = false;
-        }
-
-    }
-
-    private void SearchWalkPoint()
-    {
-        float randomZ = Random.Range(-walkPointRange, walkPointRange);
-        float randomX = Random.Range(-walkPointRange, walkPointRange);
-
-        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomX);
-
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
-        {
-            walkPointSet = true;
+            if (distance <= agent.stoppingDistance)
+            {
+                //attack the player/target and face them
+                FaceTarget();
+                
+            }
         }
     }
 
-    private void Chase()
+    void FaceTarget()
     {
-        agent.SetDestination(player.position);
+        Vector3 direction = (target.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.x));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
-
-    private void AttackPlayer()
+    void OnDrawGizmosSelected()
     {
-        agent.SetDestination(transform.position);
-
-        transform.LookAt(player);
-
-        if (!alreadyAttacked)
-        {
-            // attack code
-
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
-        }
-    }
-
-    private void ResetAttack()
-    {
-        alreadyAttacked = false;
-    }
-
-    public void TakeDamage(int damage)
-    {
-
-    }
-
-    public void OnTriggerEnter(Collider collision)
-    {
-        if (collision.gameObject.name == "Player")
-        {
-            Destroy(gameObject);
-        }
-            
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, lookRadius);
     }
 }

@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public CharacterController controller;
     public float gravityScale;
-    
+
     public float momentumIncrease;
     public float momentumDecrease;
     public float minMoveSpeed;
@@ -34,19 +34,21 @@ public class PlayerController : MonoBehaviour
     public int doubleJump;
     public int secondJump;
     public float jumpForceGround;
+
+    public bool isTouchingWall;
     // Start is called before the first frame update (Will only happen once)
     void Start()
     {
-       
+
         controller = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame (Repeats every frame)
     void Update()
     {
-      
 
-        
+
+
         if (knockBackCounter <= 0)
         {
             //move the player (X and Z)
@@ -74,16 +76,16 @@ public class PlayerController : MonoBehaviour
             {
                 if (doubleJump < 2)
                 {
-                
+
 
                     if (Input.GetButtonDown("Jump"))
                     {
-                        if(doubleJump == 1)
+                        if (doubleJump == 1)
                         {
                             jumpForce = jumpForce + secondJump;
                         }
 
-   
+
                         //StartCoroutine(WaitForSeconds());
                         moveDirection.y = jumpForce;
                         doubleJump = (doubleJump + 1);
@@ -119,20 +121,28 @@ public class PlayerController : MonoBehaviour
 
         moveDirection.y = moveDirection.y + (Physics.gravity.y * gravityScale * Time.deltaTime);
         controller.Move(moveDirection * Time.deltaTime);
-        
+
         //move the player in different directions based on camera look direction
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
-            moveSpeed = moveSpeed + momentumIncrease;
+            if (!isTouchingWall)
+            {
+                moveSpeed = moveSpeed + momentumIncrease;
+            }
+            
+
             transform.rotation = Quaternion.Euler(0f, pivot.rotation.eulerAngles.y, 0f);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 0f, moveDirection.z));
             playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
+            
         }
+        //player is idle
         else if (Input.GetAxisRaw("Horizontal") == 0 || Input.GetAxisRaw("Vertical") == 0)
         {
             moveSpeed = moveSpeed - (momentumIncrease * momentumDecrease);
         }
 
+        //
         if (moveSpeed <= minMoveSpeed)
         {
             moveSpeed = minMoveSpeed;
@@ -143,15 +153,12 @@ public class PlayerController : MonoBehaviour
             moveSpeed = maxMoveSpeed;
         }
 
+
+        
         //Animate the player
         anim.SetBool("isGrounded", controller.isGrounded);
-        anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal")))); 
+        anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal"))));
 
-
-        if (unlockable1)
-        {
-        
-        }
     }
 
     //player knockback
@@ -181,13 +188,31 @@ public class PlayerController : MonoBehaviour
         {
             unlockable1 = true;
         }
+
+        if (collision.gameObject.tag == "Wall")
+        {
+            isTouchingWall = true;
+            moveSpeed = minMoveSpeed;
+        }
     }
 
-    /*public IEnumerator WaitForSeconds()
+    public void OnTriggerStay(Collider collision)
     {
-        yield return new WaitForSeconds(5f);
-        
-    }*/
-       
-}
+        if (collision.gameObject.tag == "Wall")
+        {
+            isTouchingWall = true;
+            moveSpeed = minMoveSpeed;
 
+        }
+    }
+
+    public void OnTriggerExit(Collider collision)
+    {
+        if (collision.gameObject.tag == "Wall")
+        {
+            isTouchingWall = false;
+
+            
+        }
+    }
+}
