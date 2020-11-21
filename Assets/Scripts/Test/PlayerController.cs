@@ -36,6 +36,11 @@ public class PlayerController : MonoBehaviour
     public float jumpForceGround;
 
     public bool isTouchingWall;
+
+    public Enemy1 enemy1;
+    private float nextAttackTime = 0f;
+    public float attackRate;
+    public int damage;
     // Start is called before the first frame update (Will only happen once)
     void Start()
     {
@@ -188,12 +193,7 @@ public class PlayerController : MonoBehaviour
             unlockable1 = true;
         }
 
-
-        if (collision.gameObject.tag == "Wall")
-        {
-            isTouchingWall = true;
-            moveSpeed = minMoveSpeed;
-        }
+        
     }
 
     public void OnTriggerStay(Collider collision)
@@ -202,6 +202,28 @@ public class PlayerController : MonoBehaviour
         {
             isTouchingWall = true;
             moveSpeed = minMoveSpeed;
+
+        }
+
+        if (collision.gameObject.name == "Enemy1")
+        {
+
+            if (Time.time >= nextAttackTime)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    enemy1.TakeDamage();
+                    nextAttackTime = Time.time + 1f / attackRate;
+                }
+
+            }
+
+
+            if (collision.gameObject.tag == "Wall")
+            {
+                isTouchingWall = true;
+                moveSpeed = minMoveSpeed;
+            }
 
         }
     }

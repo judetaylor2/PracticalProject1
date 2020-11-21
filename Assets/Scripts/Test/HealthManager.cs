@@ -30,7 +30,7 @@ public class HealthManager : MonoBehaviour
     public float waitForFade;
 
     public HealthBar healthBar;
-    
+
 
     //GoldPickup gold;
 
@@ -113,6 +113,10 @@ public class HealthManager : MonoBehaviour
         }
 
     }
+
+   
+
+
 
     public void Respawn()
     {

@@ -8,20 +8,33 @@ public class Enemy1 : MonoBehaviour
 
     public float lookRadius = 10f;
     public int enemyHealth;
-    public int damage;
+    public PlayerController player;
     public bool testBool;
 
     public bool waitFinished1;
     private bool attackLoop;
 
+    public HealthBar enemyHealthBar;
+
     Transform target;
     NavMeshAgent agent;
+
+    public int maxHealth;
+
+    public int damageToGive = 1;
+
+    private float nextAttackTime = 0f;
+    public float attackRate;
+
+    //public int minHealth;
 
     // Start is called before the first frame update
     void Start()
     {
         target = PlayerManager.instance.player.transform;
         agent = GetComponent<NavMeshAgent>();
+        enemyHealthBar.SetMaxHealth(maxHealth);
+        enemyHealth = maxHealth;
     }
 
     // Update is called once per frame
@@ -55,33 +68,65 @@ public class Enemy1 : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, lookRadius);
     }
 
-
-    //I still need to make sure that the enemyhealth subtracts the same amount of health per delay
-    void OnTriggerStay(Collider collision)
+    public void TakeDamage()
     {
-        if (collision.gameObject.tag == "Player")
-        {
+        enemyHealth = enemyHealth - player.damage;
+        
+        enemyHealthBar.SetHealth(enemyHealth);
 
-            StartCoroutine(EnemyDamageCooldown());
-            attackLoop = true;
+        if (enemyHealth <= 0)
+        {
+            Destroy(gameObject);
         }
 
-    }
 
-    public IEnumerator EnemyDamageCooldown()
-    {
-        while (attackLoop)
+        //I still need to make sure that the enemyhealth subtracts the same amount of health per delay
+        /*void OnTriggerStay(Collider collision)
         {
-            attackLoop = false;
-
-            yield return new WaitForSeconds(1f);
-
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (collision.gameObject.tag == "Player")
             {
-                enemyHealth = enemyHealth - damage;
+
+                StartCoroutine(EnemyDamageCooldown());
+                attackLoop = true;
             }
-          
+
+        }
+
+        public IEnumerator EnemyDamageCooldown()
+        {
+            while (attackLoop)
+            {
+                attackLoop = false;
+
+                yield return new WaitForSeconds(1f);
+
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    enemyHealth = enemyHealth - damage;
+                }
+
+            }
+        }  */
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (Time.time >= nextAttackTime)
+        {
+            if (other.gameObject.tag == "Player")
+            {
+                Vector3 hitDirection = other.transform.position - transform.position;
+                hitDirection = hitDirection.normalized;if (Time.time >= nextAttackTime)
+
+
+                FindObjectOfType<HealthManager>().HurtPlayer(damageToGive, hitDirection);
+
+                nextAttackTime = Time.time + 1f / attackRate;
+            }
+            
         }
     }
+
 }
+
 
