@@ -153,7 +153,6 @@ public class PlayerController : MonoBehaviour
             moveSpeed = maxMoveSpeed;
         }
 
-
         
         //Animate the player
         anim.SetBool("isGrounded", controller.isGrounded);
@@ -188,6 +187,7 @@ public class PlayerController : MonoBehaviour
         {
             unlockable1 = true;
         }
+
 
         if (collision.gameObject.tag == "Wall")
         {

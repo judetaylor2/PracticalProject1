@@ -7,6 +7,12 @@ public class Enemy1 : MonoBehaviour
 {
 
     public float lookRadius = 10f;
+    public int enemyHealth;
+    public int damage;
+    public bool testBool;
+
+    public bool waitFinished1;
+    private bool attackLoop;
 
     Transform target;
     NavMeshAgent agent;
@@ -31,7 +37,7 @@ public class Enemy1 : MonoBehaviour
             {
                 //attack the player/target and face them
                 FaceTarget();
-                
+
             }
         }
     }
@@ -48,4 +54,34 @@ public class Enemy1 : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, lookRadius);
     }
+
+
+    //I still need to make sure that the enemyhealth subtracts the same amount of health per delay
+    void OnTriggerStay(Collider collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+
+            StartCoroutine(EnemyDamageCooldown());
+            attackLoop = true;
+        }
+
+    }
+
+    public IEnumerator EnemyDamageCooldown()
+    {
+        while (attackLoop)
+        {
+            attackLoop = false;
+
+            yield return new WaitForSeconds(1f);
+
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                enemyHealth = enemyHealth - damage;
+            }
+          
+        }
+    }
 }
+

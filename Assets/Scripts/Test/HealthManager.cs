@@ -29,13 +29,16 @@ public class HealthManager : MonoBehaviour
     public float fadeSpeed;
     public float waitForFade;
 
+    public HealthBar healthBar;
+    
+
     //GoldPickup gold;
 
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
-
+        healthBar.SetMaxHealth(maxHealth);
 
         //thePlayer = FindObjectOfType<PlayerController>();
 
@@ -45,6 +48,8 @@ public class HealthManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        healthBar.SetHealth(currentHealth);
 
         if (invincibilityCounter > 0)
         {
@@ -87,10 +92,13 @@ public class HealthManager : MonoBehaviour
         if (invincibilityCounter <= 0)
         {
             currentHealth -= damage;
+            healthBar.SetHealth(currentHealth);
+
 
             if (currentHealth <= 0)
             {
                 Respawn();
+                healthBar.SetHealth(maxHealth);
             }
             else
             {
