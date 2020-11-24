@@ -25,6 +25,8 @@ public class Enemy1 : MonoBehaviour
 
     private float nextAttackTime = 0f;
     public float attackRate;
+    private float attackDelay = 0f;
+    public float attackDelayTime;
 
     //public int minHealth;
 
@@ -111,19 +113,34 @@ public class Enemy1 : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (Time.time >= nextAttackTime)
+        if (other.gameObject.tag == "Player")
         {
-            if (other.gameObject.tag == "Player")
+            if(player.enemyStuned)
             {
-                Vector3 hitDirection = other.transform.position - transform.position;
-                hitDirection = hitDirection.normalized;if (Time.time >= nextAttackTime)
+                attackDelayTime = 4f;
 
+                if (Time.time >= attackDelay)
+                {
+                    player.enemyStuned = false;
+                }
+            }
+
+            if (Time.time >= nextAttackTime && Time.time >= attackDelay)
+            {
+                nextAttackTime = Time.time + 1f / attackRate;
+
+                attackDelay = Time.time + attackDelayTime;
+
+                Vector3 hitDirection = other.transform.position - transform.position;
+                hitDirection = hitDirection.normalized;
 
                 FindObjectOfType<HealthManager>().HurtPlayer(damageToGive, hitDirection);
 
                 nextAttackTime = Time.time + 1f / attackRate;
+
+                attackDelay = Time.time + attackDelayTime;
+
             }
-            
         }
     }
 

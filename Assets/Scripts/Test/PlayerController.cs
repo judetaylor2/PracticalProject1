@@ -41,6 +41,10 @@ public class PlayerController : MonoBehaviour
     private float nextAttackTime = 0f;
     public float attackRate;
     public int damage;
+
+    public bool stunSlash;
+    public bool enemyStuned;
+    public float stunTime;
     // Start is called before the first frame update (Will only happen once)
     void Start()
     {
@@ -163,6 +167,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isGrounded", controller.isGrounded);
         anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal"))));
 
+        
     }
 
     //player knockback
@@ -193,7 +198,12 @@ public class PlayerController : MonoBehaviour
             unlockable1 = true;
         }
 
-        
+        if (collision.gameObject.name == "Unlockable2")
+        {
+            stunSlash = true;
+        }
+
+
     }
 
     public void OnTriggerStay(Collider collision)
@@ -207,6 +217,18 @@ public class PlayerController : MonoBehaviour
 
         if (collision.gameObject.name == "Enemy1")
         {
+
+            if (stunSlash)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse1))
+                {
+                    enemyStuned = true;
+                    damage = damage / 5;
+                    enemy1.TakeDamage();
+                    nextAttackTime = Time.time + stunTime / attackRate;
+                    damage = 5;
+                }
+            }
 
             if (Time.time >= nextAttackTime)
             {
@@ -226,10 +248,12 @@ public class PlayerController : MonoBehaviour
             }
 
         }
+
     }
 
     public void OnTriggerExit(Collider collision)
     {
+        if (collision.gameObject.tag == "Wall")
         if (collision.gameObject.tag == "Wall")
         {
             isTouchingWall = false;

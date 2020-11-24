@@ -10,6 +10,7 @@ public class GoldPickup : MonoBehaviour
     public int value;
 
     public GameObject pickupEffect;
+    public HealthManager healthManager;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +31,7 @@ public class GoldPickup : MonoBehaviour
             FindObjectOfType<GameManager>().AddGold(value);
 
             Instantiate(pickupEffect, transform.position, transform.rotation);
+            healthManager.HealPlayer(1);
             Destroy(gameObject);
         }
      
