@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class HealthManager : MonoBehaviour
 {
     public int maxHealth;
+    private int minHealth = 0;
     public int currentHealth;
 
     public PlayerController thePlayer;
@@ -30,7 +31,7 @@ public class HealthManager : MonoBehaviour
     public float waitForFade;
 
     public HealthBar healthBar;
-
+    public HealthBar PowerMeter;
 
     //GoldPickup gold;
 
@@ -40,6 +41,8 @@ public class HealthManager : MonoBehaviour
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
 
+        currentHealth = maxHealth;
+        PowerMeter.SetMinHealth(minHealth);
         //thePlayer = FindObjectOfType<PlayerController>();
 
         respawnPoint = thePlayer.transform.position;

@@ -15,10 +15,24 @@ public class HealthBar : MonoBehaviour
 
         fill.color = gradient.Evaluate(1f);
     }
-    
+
+    public void SetMinHealth(int health)
+    {
+        slider.minValue = health;
+        slider.value = health;
+
+        fill.color = gradient.Evaluate(1f);
+    }
+
     public void SetHealth(int health)
     {
         slider.value = health;
+        fill.color = gradient.Evaluate(slider.normalizedValue);
+    }
+
+    public void AddHealth(int health)
+    {
+        slider.value = slider.value + health;
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
     // Start is called before the first frame update

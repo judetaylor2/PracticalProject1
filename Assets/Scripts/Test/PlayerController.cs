@@ -41,15 +41,23 @@ public class PlayerController : MonoBehaviour
     private float nextAttackTime = 0f;
     public float attackRate;
     public int damage;
+    public int damageAddition;
+    public HealthManager healthManager;
 
     public bool stunSlash;
     public bool enemyStuned;
     public float stunTime;
+
+    public HealthBar powerMeter;
+    public float powerMeterDuration;
+
     // Start is called before the first frame update (Will only happen once)
     void Start()
     {
 
         controller = GetComponent<CharacterController>();
+
+        
     }
 
     // Update is called once per frame (Repeats every frame)
@@ -162,6 +170,10 @@ public class PlayerController : MonoBehaviour
             moveSpeed = maxMoveSpeed;
         }
 
+        if (powerMeter.slider.value == powerMeter.slider.maxValue)
+        {
+            PowerMeterComplete();
+        }
         
         //Animate the player
         anim.SetBool("isGrounded", controller.isGrounded);
@@ -169,6 +181,7 @@ public class PlayerController : MonoBehaviour
 
         
     }
+
 
     //player knockback
     public void KnockBack(Vector3 direction)
@@ -190,6 +203,33 @@ public class PlayerController : MonoBehaviour
         }
     }*/
 
+    public void PowerMeterComplete()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+
+            damage = damage * 2;
+
+            damageAddition = damageAddition * 2;
+
+            healthManager.currentHealth = healthManager.currentHealth * 2;
+
+            powerMeter.SetMinHealth(Convert.ToInt32(powerMeter.slider.minValue));
+
+            Invoke("StopPowerMeter", powerMeterDuration);
+        }
+        
+        
+    }
+
+    public void StopPowerMeter()
+    {
+        damage = damage / 2;
+
+        damageAddition = damageAddition / 2;
+
+        healthManager.currentHealth = healthManager.currentHealth / 2;
+    }
 
     public void OnTriggerEnter(Collider collision)
     {
@@ -202,8 +242,6 @@ public class PlayerController : MonoBehaviour
         {
             stunSlash = true;
         }
-
-
     }
 
     public void OnTriggerStay(Collider collision)
@@ -215,7 +253,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (collision.gameObject.name == "Enemy1")
+        if (collision.gameObject.tag == "Enemy1")
         {
 
             if (stunSlash)
@@ -223,7 +261,6 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
                     enemyStuned = true;
-                    damage = damage / 5;
                     enemy1.TakeDamage();
                     nextAttackTime = Time.time + stunTime / attackRate;
                     damage = 5;
@@ -241,11 +278,7 @@ public class PlayerController : MonoBehaviour
             }
 
 
-            if (collision.gameObject.tag == "Wall")
-            {
-                isTouchingWall = true;
-                moveSpeed = minMoveSpeed;
-            }
+
 
         }
 

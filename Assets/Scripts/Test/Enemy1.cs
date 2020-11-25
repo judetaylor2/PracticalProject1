@@ -15,6 +15,7 @@ public class Enemy1 : MonoBehaviour
     private bool attackLoop;
 
     public HealthBar enemyHealthBar;
+    public HealthBar powerMeter;
 
     Transform target;
     NavMeshAgent agent;
@@ -27,6 +28,8 @@ public class Enemy1 : MonoBehaviour
     public float attackRate;
     private float attackDelay = 0f;
     public float attackDelayTime;
+
+    
 
     //public int minHealth;
 
@@ -76,6 +79,10 @@ public class Enemy1 : MonoBehaviour
         
         enemyHealthBar.SetHealth(enemyHealth);
 
+        //powerMeter = player.damage + player.damageAddition;
+
+        powerMeter.AddHealth(player.damage);
+
         if (enemyHealth <= 0)
         {
             Destroy(gameObject);
@@ -100,6 +107,7 @@ public class Enemy1 : MonoBehaviour
             {
                 attackLoop = false;
 
+                yield return new WaitForSeconds(1f);
                 yield return new WaitForSeconds(1f);
 
                 if (Input.GetKeyDown(KeyCode.Mouse0))
