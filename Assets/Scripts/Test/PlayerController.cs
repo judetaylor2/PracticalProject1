@@ -9,47 +9,66 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    //basic player movement
     public float moveSpeed;
     public float jumpForce;
     public CharacterController controller;
     public float gravityScale;
 
+    //player momentum
     public float momentumIncrease;
     public float momentumDecrease;
     public float minMoveSpeed;
     public float maxMoveSpeed;
 
+    //advanced player movement and animation
     private Vector3 moveDirection;
     public Animator anim;
     public Transform pivot;
     public float rotateSpeed;
     public GameObject playerModel;
 
+    //knockback
     public float knockBackForce;
     public float knockBackTime;
     private float knockBackCounter;
 
+    //unlockables
     public bool unlockable1;
-
+    public bool stunSlash;
+    public bool PowerStone;
+    public bool speedGlove;
+    
+    //double jump
     public int doubleJump;
     public int secondJump;
     public float jumpForceGround;
+    
+    //stun slash
+    public bool enemyStuned;
+    public float stunTime;
 
+    //wall collision
     public bool isTouchingWall;
 
+    //damage
     public Enemy1 enemy1;
     private float nextAttackTime = 0f;
     public float attackRate;
+    public float maxAttackRate;
+    public float minAttackRate;
     public int damage;
     public int damageAddition;
     public HealthManager healthManager;
 
-    public bool stunSlash;
-    public bool enemyStuned;
-    public float stunTime;
-
+    //power meter
     public HealthBar powerMeter;
     public float powerMeterDuration;
+    public float maxPowerMeterDuration;
+    public float minPowerMeterDuration;
+
+    
+
 
     // Start is called before the first frame update (Will only happen once)
     void Start()
@@ -74,14 +93,6 @@ public class PlayerController : MonoBehaviour
             moveDirection = moveDirection.normalized * moveSpeed;
             moveDirection.y = yStore;
 
-            /*if(!Input.GetButtonDown("Vertical"))
-            {
-                moveSpeed = moveSpeed++;
-
-
-            }*/
-
-            //make the player jump (Y)
 
             if (controller.isGrounded)
             {
@@ -103,7 +114,7 @@ public class PlayerController : MonoBehaviour
                         }
 
 
-                        //StartCoroutine(WaitForSeconds());
+
                         moveDirection.y = jumpForce;
                         doubleJump = (doubleJump + 1);
                     }
@@ -174,7 +185,25 @@ public class PlayerController : MonoBehaviour
         {
             PowerMeterComplete();
         }
-        
+        //-----------------------------------------------------------------------------------
+        if (PowerStone)
+        {
+            powerMeterDuration = maxPowerMeterDuration;
+        }
+        else
+        {
+            powerMeterDuration = minPowerMeterDuration;
+        }
+
+        if(speedGlove)
+        {
+            attackRate = maxAttackRate;
+        }
+        else
+        {
+            attackRate = minAttackRate;
+        }
+
         //Animate the player
         anim.SetBool("isGrounded", controller.isGrounded);
         anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal"))));
@@ -194,14 +223,6 @@ public class PlayerController : MonoBehaviour
         moveSpeed = minMoveSpeed;
 
     }
-
-    /*public void OnCollisionEnter(Collision stopMomentum)
-    {
-        if(stopMomentum.gameObject == "n")
-        {
-            moveSpeed = minMoveSpeed;
-        }
-    }*/
 
     public void PowerMeterComplete()
     {
@@ -241,6 +262,18 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.name == "Unlockable2")
         {
             stunSlash = true;
+        }
+
+        if (collision.gameObject.name == "Unlockable3")
+        {
+            PowerStone = true;
+
+        }
+
+        if (collision.gameObject.name == "Unlockable4")
+        {
+            speedGlove = true;
+
         }
     }
 
