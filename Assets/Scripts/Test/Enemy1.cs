@@ -36,6 +36,7 @@ public class Enemy1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //player = GetComponent<PlayerController>();
         target = PlayerManager.instance.player.transform;
         agent = GetComponent<NavMeshAgent>();
         enemyHealthBar.SetMaxHealth(maxHealth);
@@ -118,6 +119,13 @@ public class Enemy1 : MonoBehaviour
             }
         }  */
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        nextAttackTime = Time.time + 1f / attackRate;
+
+    }
+
 
     private void OnTriggerStay(Collider other)
     {

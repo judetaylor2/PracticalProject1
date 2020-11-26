@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     public bool isTouchingWall;
 
     //damage
-    public Enemy1 enemy1;
+    Enemy1 enemy1;
     private float nextAttackTime = 0f;
     public float attackRate;
     public float maxAttackRate;
@@ -288,6 +288,8 @@ public class PlayerController : MonoBehaviour
 
         if (collision.gameObject.tag == "Enemy1")
         {
+
+            enemy1 = collision.gameObject.GetComponent<Enemy1>();
 
             if (stunSlash)
             {
