@@ -41,7 +41,7 @@ public class HealthManager : MonoBehaviour
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
 
-        currentHealth = maxHealth;
+        //currentHealth = maxHealth;
         PowerMeter.SetMinHealth(minHealth);
         //thePlayer = FindObjectOfType<PlayerController>();
 
@@ -117,7 +117,32 @@ public class HealthManager : MonoBehaviour
 
     }
 
-   
+    public void HurtPlayerNoKnockBack(int damage, Vector3 direction)
+    {
+        if (invincibilityCounter <= 0)
+        {
+            currentHealth -= damage;
+            healthBar.SetHealth(currentHealth);
+
+
+            if (currentHealth <= 0)
+            {
+                Respawn();
+                healthBar.SetHealth(maxHealth);
+            }
+            else
+            {
+                
+
+                invincibilityCounter = invincibilityLength;
+
+                playerRenderer.enabled = false;
+                flashCounter = flashLength;
+            }
+
+        }
+
+    }
 
 
 

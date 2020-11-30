@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -38,12 +39,12 @@ public class PlayerController : MonoBehaviour
     public bool stunSlash;
     public bool PowerStone;
     public bool speedGlove;
-    
+
     //double jump
     public int doubleJump;
     public int secondJump;
     public float jumpForceGround;
-    
+
     //stun slash
     public bool enemyStuned;
     public float stunTime;
@@ -67,7 +68,10 @@ public class PlayerController : MonoBehaviour
     public float maxPowerMeterDuration;
     public float minPowerMeterDuration;
 
-    
+    //Crate
+    public Crate crate;
+
+
 
 
     // Start is called before the first frame update (Will only happen once)
@@ -76,7 +80,7 @@ public class PlayerController : MonoBehaviour
 
         controller = GetComponent<CharacterController>();
 
-        
+
     }
 
     // Update is called once per frame (Repeats every frame)
@@ -157,12 +161,12 @@ public class PlayerController : MonoBehaviour
             {
                 moveSpeed = moveSpeed + momentumIncrease;
             }
-            
+
 
             transform.rotation = Quaternion.Euler(0f, pivot.rotation.eulerAngles.y, 0f);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 0f, moveDirection.z));
             playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
-            
+
         }
         //player is idle
         else if (Input.GetAxisRaw("Horizontal") == 0 || Input.GetAxisRaw("Vertical") == 0)
@@ -195,7 +199,7 @@ public class PlayerController : MonoBehaviour
             powerMeterDuration = minPowerMeterDuration;
         }
 
-        if(speedGlove)
+        if (speedGlove)
         {
             attackRate = maxAttackRate;
         }
@@ -208,7 +212,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isGrounded", controller.isGrounded);
         anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal"))));
 
-        
+
     }
 
 
@@ -239,8 +243,8 @@ public class PlayerController : MonoBehaviour
 
             Invoke("StopPowerMeter", powerMeterDuration);
         }
-        
-        
+
+
     }
 
     public void StopPowerMeter()
@@ -275,6 +279,13 @@ public class PlayerController : MonoBehaviour
             speedGlove = true;
 
         }
+
+        if (collision.gameObject.name == "Goal")
+        {
+            SceneManager.LoadScene("Level 1");
+
+        }
+
     }
 
     public void OnTriggerStay(Collider collision)
@@ -283,6 +294,16 @@ public class PlayerController : MonoBehaviour
         {
             isTouchingWall = true;
             moveSpeed = minMoveSpeed;
+
+        }
+
+        if (collision.gameObject.tag == "Crate")
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                crate = collision.gameObject.GetComponent<Crate>();
+                crate.BreakBox();
+            }
 
         }
 
@@ -319,14 +340,21 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void OnTriggerExit(Collider collision)
+    private void OnTriggerExit(Collider collision)
     {
-        if (collision.gameObject.tag == "Wall")
+     
+
         if (collision.gameObject.tag == "Wall")
         {
             isTouchingWall = false;
-
-            
         }
+   
+
+
+    }   
+
+    private void OnCollisionExit(Collision col)
+    {
+        moveDirection.y = -gravityScale;
     }
-}
+}       

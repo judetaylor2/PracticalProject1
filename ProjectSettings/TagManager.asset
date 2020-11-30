@@ -8,6 +8,7 @@ TagManager:
   - test
   - Wall
   - Enemy1
+  - Crate
   layers:
   - Default
   - TransparentFX

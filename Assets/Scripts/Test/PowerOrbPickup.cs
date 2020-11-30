@@ -4,13 +4,13 @@ using System.ComponentModel.Design;
 using System.Security.Cryptography;
 using UnityEngine;
 
-public class GoldPickup : MonoBehaviour
+public class PowerOrbPickup : MonoBehaviour
 {
 
     public int value;
 
     public GameObject pickupEffect;
-    public HealthManager healthManager;
+    public HealthBar powerMeter;
 
     // Start is called before the first frame update
     void Start()
@@ -21,27 +21,22 @@ public class GoldPickup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            FindObjectOfType<GameManager>().AddGold(value);
-
-            Instantiate(pickupEffect, transform.position, transform.rotation);
-            healthManager.HealPlayer(1);
+            
+            //Instantiate(pickupEffect, transform.position, transform.rotation);
+            powerMeter.AddHealth(value);
             Destroy(gameObject);
+
         }
-     
-       
+
+
     }
 
-
-    /*public void replaceGold(GameObject object1)
-    {
-        Instantiate(gameObject);
-    }*/
 }
 

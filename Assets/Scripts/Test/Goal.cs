@@ -1,13 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class Goal : MonoBehaviour
 {
-    public int currentGold;
-    public Text goldText;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -20,10 +16,16 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void AddGold(int goldToAdd)
+    public void Load()
     {
-        currentGold += goldToAdd;
-        goldText.text = "Gold: " + currentGold;
+        //SceneManager.LoadScene("Level 1");
     }
 
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.name == "Player")
+        {
+            Load();
+        }
+    }
 }
