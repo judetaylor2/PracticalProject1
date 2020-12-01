@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayAnimation : MonoBehaviour
+public class MovingPlatform : MonoBehaviour
 {
 
-    private Animator animation;
+    public float x;
+    public float y;
+    public float z;
 
     // Start is called before the first frame update
     void Start()
     {
-        animation.SetBool("Laser_Spinning", true);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        transform.Translate(x, y, z * Time.deltaTime);
+
     }
 }
