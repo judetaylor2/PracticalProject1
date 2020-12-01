@@ -28,6 +28,7 @@ public class Enemy1 : MonoBehaviour
     public float attackRate;
     private float attackDelay = 0f;
     public float attackDelayTime;
+    
 
     
 
@@ -123,6 +124,8 @@ public class Enemy1 : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         nextAttackTime = Time.time + 1f / attackRate;
+
+        
 
     }
 

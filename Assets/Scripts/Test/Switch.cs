@@ -5,6 +5,7 @@ using UnityEngine;
 public class Switch : MonoBehaviour
 {
     public bool switchOn;
+    public List<GameObject> switchObjects;
 
     void Start()
     {
@@ -18,10 +19,20 @@ public class Switch : MonoBehaviour
             if(switchOn)
             {
                 switchOn = false;
+
+                foreach (GameObject theObject in switchObjects)
+                {
+                    theObject.SetActive(switchOn);
+                }
             }
-            else if (!switchOn)
+            else
             {
                 switchOn = true;
+
+                foreach (GameObject theObject in switchObjects)
+                {
+                    theObject.SetActive(switchOn);
+                }
             }
   
         }

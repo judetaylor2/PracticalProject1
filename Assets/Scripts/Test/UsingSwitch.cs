@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class UsingSwitch : MonoBehaviour
 {
-    //Switch
+   /* //Switch
     public Switch theSwitch;
 
     void Start()
     {
         gameObject.SetActive(false);
+        Debug.Log("Start");
     }
     void Update()
     {
@@ -31,5 +32,5 @@ public class UsingSwitch : MonoBehaviour
             gameObject.SetActive(false);
             Debug.Log("false");
         }
-    }
+    }*/
 }
