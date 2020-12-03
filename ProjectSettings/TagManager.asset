@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - Enemy1
   - Crate
+  - PowerMeter
   layers:
   - Default
   - TransparentFX

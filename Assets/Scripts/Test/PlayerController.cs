@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour
     public bool stunSlash;
     public bool PowerStone;
     public bool speedGlove;
+    public bool groundPound;
+
 
     //double jump
     public int doubleJump;
@@ -71,6 +73,9 @@ public class PlayerController : MonoBehaviour
 
     //Crate
     public Crate crate;
+
+    //ground pound
+    public float groundPoundForce;
 
 
 
@@ -211,6 +216,15 @@ public class PlayerController : MonoBehaviour
             attackRate = minAttackRate;
         }
 
+        if (groundPound && !controller.isGrounded && Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            moveDirection.y = groundPoundForce;
+        }
+        else if (controller.isGrounded)
+        {
+            moveDirection.y = 0f;
+        }
+
         //Animate the player
         anim.SetBool("isGrounded", controller.isGrounded);
         anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal"))));
@@ -284,6 +298,12 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.name == "Unlockable4")
         {
             speedGlove = true;
+
+        }
+
+        if (collision.gameObject.name == "Unlockable5")
+        {
+            groundPound = true;
 
         }
 

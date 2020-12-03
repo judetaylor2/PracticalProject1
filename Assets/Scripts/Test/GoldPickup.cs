@@ -10,7 +10,7 @@ public class GoldPickup : MonoBehaviour
     public int value;
     public int PointsToGive;
 
-    //public GameObject pickupEffect;
+    public GameObject pickupEffect;
     public GameManager gameManager;
     public HealthManager healthManager;
     public PlayerController player;
@@ -25,7 +25,12 @@ public class GoldPickup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         target = FindObjectOfType<PlayerController>().GetComponent<Transform>();
+        player = FindObjectOfType<PlayerController>();
+        healthManager = FindObjectOfType<HealthManager>();
+        gameManager = FindObjectOfType<GameManager>();
+
         followingPlayer = false;
         gameObject.SetActive(true);
         //pickupEffect = GameObject.Find("Gold Pickup Effect");
@@ -35,6 +40,8 @@ public class GoldPickup : MonoBehaviour
     void Update()
     {
         randomNumber = Random.Range(1, 10);
+
+        //pickupEffect = GameObject.Find("/Gold Pickup Effect");
 
         if (followingPlayer)
         {
@@ -62,9 +69,9 @@ public class GoldPickup : MonoBehaviour
             Destroy(gameObject);
         }*/
 
-        //pickupEffect = GameObject.Find("Gold Pickup Effect");
+        //pickupEffect = GameObject.Find("Gold Pickup Effect")
 
-        //Instantiate(pickupEffect, transform.position, transform.rotation);
+        Instantiate(pickupEffect, transform.position, transform.rotation);
         Debug.Log("adding the gold...");
         gameManager.AddGold(value);
         healthManager.HealPlayer(value);

@@ -15,19 +15,19 @@ public class Crate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //Instantiate(goldObject, transform.position, transform.rotation);
     }
 
     public void BreakBox()
     {
-        if(goldObject)
+        if(goldObject/* != null*/)
         {
-            goldObject.SetActive(true);
+            Instantiate(goldObject, transform.position, transform.rotation);
         }
 
-        if (powerOrbObject)
+        if (powerOrbObject/* != null*/)
         {
-            powerOrbObject.SetActive(true);
+            Instantiate(powerOrbObject, transform.position, transform.rotation);
         }
 
         Destroy(gameObject);
