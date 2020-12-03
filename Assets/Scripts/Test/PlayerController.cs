@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public CharacterController controller;
     public float gravityScale;
+    public bool jumping;
 
     //player momentum
     public float momentumIncrease;
@@ -115,6 +116,7 @@ public class PlayerController : MonoBehaviour
                         if (doubleJump == 1)
                         {
                             jumpForce = jumpForce + secondJump;
+                            jumping = true;
                         }
 
 
@@ -129,6 +131,7 @@ public class PlayerController : MonoBehaviour
                     {
                         moveDirection.y = 0f;
                         doubleJump = 0;
+                        jumping = false;
                     }
                 }
             }
@@ -212,6 +215,10 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isGrounded", controller.isGrounded);
         anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal"))));
 
+        if (jumping = false && !controller.isGrounded)
+        {
+            moveDirection.y = 0;
+        }
 
     }
 

@@ -13,6 +13,7 @@ public class FollowTarget : MonoBehaviour
     void Start()
     {
         target = FindObjectOfType<PlayerController>().GetComponent<Transform>();
+        followingPlayer = false;
     }
 
     // Update is called once per frame
@@ -29,6 +30,9 @@ public class FollowTarget : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        followingPlayer = true;
+        if (other.tag == "Player")
+        {
+            followingPlayer = true;
+        }
     }
 }

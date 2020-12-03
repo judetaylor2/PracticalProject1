@@ -8,34 +8,77 @@ public class GoldPickup : MonoBehaviour
 {
 
     public int value;
+    public int PointsToGive;
 
-    public GameObject pickupEffect;
+    //public GameObject pickupEffect;
+    public GameManager gameManager;
     public HealthManager healthManager;
+    public PlayerController player;
+
+    //public Collider col;
+
+    public Transform target;
+    public float followSpeed;
+    public bool followingPlayer;
+    public float randomNumber;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.SetActive(false);
+        target = FindObjectOfType<PlayerController>().GetComponent<Transform>();
+        followingPlayer = false;
+        gameObject.SetActive(true);
+        //pickupEffect = GameObject.Find("Gold Pickup Effect");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        randomNumber = Random.Range(1, 10);
+
+        if (followingPlayer)
+        {
+            transform.LookAt(target.position);
+            transform.Translate(0f, 0f, followSpeed * player.moveSpeed * Time.deltaTime);
+        }
+
+        /*if (col.tag == "Player")
+        {
+            Debug.Log("now colliding with the player");
+            CollectGold();
+
+        }*/
+
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void CollectGold()
     {
-        if (other.tag == "Player")
+        /*if (other.tag == "Player")
         {
             FindObjectOfType<GameManager>().AddGold(value);
 
             Instantiate(pickupEffect, transform.position, transform.rotation);
             healthManager.HealPlayer(1);
             Destroy(gameObject);
-        }
-     
-       
+        }*/
+
+        //pickupEffect = GameObject.Find("Gold Pickup Effect");
+
+        //Instantiate(pickupEffect, transform.position, transform.rotation);
+        Debug.Log("adding the gold...");
+        gameManager.AddGold(value);
+        healthManager.HealPlayer(value);
+        gameManager.AddPoints(PointsToGive);
+        Debug.Log("gold addition complete");
+        Destroy(gameObject);
+
+        //pickupEffect = null;
+
+    }
+
+    void OnTriggerEnter()
+    {
+        followingPlayer = true;
     }
 
 

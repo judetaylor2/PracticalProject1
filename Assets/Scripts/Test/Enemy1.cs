@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class Enemy1 : MonoBehaviour
 {
-
+    public int pointsToGive;
     public float lookRadius = 10f;
     public int enemyHealth;
     public PlayerController player;
@@ -16,6 +16,7 @@ public class Enemy1 : MonoBehaviour
 
     public HealthBar enemyHealthBar;
     public HealthBar powerMeter;
+    public GameManager gameManager;
 
     Transform target;
     NavMeshAgent agent;
@@ -154,6 +155,7 @@ public class Enemy1 : MonoBehaviour
                 hitDirection = hitDirection.normalized;
 
                 FindObjectOfType<HealthManager>().HurtPlayer(damageToGive, hitDirection);
+                gameManager.AddPoints(pointsToGive);
 
                 nextAttackTime = Time.time + 1f / attackRate;
 

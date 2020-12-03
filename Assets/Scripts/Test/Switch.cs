@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour
 {
+    public bool timedSwitch;
+    public float switchTime;
     public bool switchOn;
     public List<GameObject> switchObjects;
 
@@ -12,6 +14,33 @@ public class Switch : MonoBehaviour
         switchOn = false;
     }
 
+    void Update()
+    {
+        if (switchOn)
+        {
+
+            foreach (GameObject theObject in switchObjects)
+            {
+                theObject.SetActive(switchOn);
+            }
+        }
+        else
+        {
+
+            foreach (GameObject theObject in switchObjects)
+            {
+                theObject.SetActive(switchOn);
+            }
+        }
+
+        if (timedSwitch == true && switchOn == true)
+        {
+            Invoke("SetToFalse", switchTime);
+        }
+    }
+
+
+
     public void OnTriggerEnter(Collider col)
     {
         if(col.gameObject.tag == "Player")
@@ -19,23 +48,21 @@ public class Switch : MonoBehaviour
             if(switchOn)
             {
                 switchOn = false;
-
-                foreach (GameObject theObject in switchObjects)
-                {
-                    theObject.SetActive(switchOn);
-                }
             }
             else
             {
                 switchOn = true;
-
-                foreach (GameObject theObject in switchObjects)
-                {
-                    theObject.SetActive(switchOn);
-                }
             }
-  
+            
+
+
         }
+    }
+
+    public void SetToFalse()
+    {
+        switchOn = false;
+        CancelInvoke();
     }
 
 }

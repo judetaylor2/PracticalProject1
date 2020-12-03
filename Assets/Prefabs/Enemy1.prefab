@@ -238,6 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d957dde2cd4a20d42988fea4a6187d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointsToGive: 30
   lookRadius: 12
   enemyHealth: 0
   player: {fileID: 0}
@@ -245,6 +246,7 @@ MonoBehaviour:
   waitFinished1: 0
   enemyHealthBar: {fileID: 8974356661727601675}
   powerMeter: {fileID: 0}
+  gameManager: {fileID: 0}
   maxHealth: 15
   damageToGive: 1
   attackRate: 1
