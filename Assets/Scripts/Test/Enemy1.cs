@@ -145,7 +145,9 @@ public class Enemy1 : MonoBehaviour
                 Instantiate(powerOrb, transform.position, transform.rotation);
                 orbCount++;
             }
-            
+
+            powerOrb = null;
+            coin = null;
         }
 
 

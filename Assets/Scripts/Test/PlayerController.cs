@@ -78,6 +78,15 @@ public class PlayerController : MonoBehaviour
     public float groundPoundForce;
     public bool isGroundPounding;
 
+    //sound
+    public AudioSource soundJump;
+    public AudioSource soundDoubleJump;
+    //public AudioSource soundRun;
+    public AudioSource soundAttack1;
+    public AudioSource soundAttack2;
+    public AudioSource soundGroundPound;
+    //public AudioSource sound;
+
 
 
     // Start is called before the first frame update (Will only happen once)
@@ -88,13 +97,18 @@ public class PlayerController : MonoBehaviour
 
         isGroundPounding = false;
 
+        //sound
+        //jumpSound = GetComponent<AudioSource>()
+
     }
 
     // Update is called once per frame (Repeats every frame)
     void Update()
     {
 
-       // Debug.Log(moveDirection.y);
+
+
+        // Debug.Log(moveDirection.y);
 
         //Debug.Log(isGroundPounding);
 
@@ -125,12 +139,15 @@ public class PlayerController : MonoBehaviour
                         {
                             jumpForce = jumpForce + secondJump;
                             jumping = true;
+                            
+                            soundDoubleJump.Play();
+
                         }
-
-
 
                         moveDirection.y = jumpForce;
                         doubleJump = (doubleJump + 1);
+
+                        soundJump.Play();
                     }
                 }
                 else if (doubleJump >= 2)
@@ -140,6 +157,7 @@ public class PlayerController : MonoBehaviour
                         moveDirection.y = 0f;
                         doubleJump = 0;
                         jumping = false;
+                        
                     }
                 }
             }
@@ -151,6 +169,7 @@ public class PlayerController : MonoBehaviour
                     {
                         moveDirection.y = jumpForce;
                         doubleJump = (doubleJump++);
+                        soundJump.Play();
                     }
                 }
             }
@@ -172,6 +191,8 @@ public class PlayerController : MonoBehaviour
             {
                 moveSpeed = moveSpeed + momentumIncrease;
             }
+            
+            //soundRun.Play();
 
 
             transform.rotation = Quaternion.Euler(0f, pivot.rotation.eulerAngles.y, 0f);
@@ -223,12 +244,15 @@ public class PlayerController : MonoBehaviour
         {
             moveDirection.y = groundPoundForce;
             isGroundPounding = true;
+            soundGroundPound.Play();
         }
         else if (controller.isGrounded)
         {
             moveDirection.y = 0f;
 
             isGroundPounding = false;
+            
+            
         }
 
         //Animate the player
@@ -281,6 +305,8 @@ public class PlayerController : MonoBehaviour
         damageAddition = damageAddition / 2;
 
         healthManager.currentHealth = healthManager.currentHealth / 2;
+
+        //material change
     }
 
     public void OnTriggerEnter(Collider collision)
@@ -354,6 +380,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
+                    soundAttack2.Play();
                     damage = 1;
                     enemyStuned = true;
                     enemy1.TakeDamage();
@@ -366,7 +393,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
-                    
+                    soundAttack1.Play();
                     enemy1.TakeDamage();
                     nextAttackTime = Time.time + 1f / attackRate;
                 }
@@ -377,6 +404,8 @@ public class PlayerController : MonoBehaviour
 
 
         }
+
+        
 
         /*void OnCollisionEnter(Collision other)
         {

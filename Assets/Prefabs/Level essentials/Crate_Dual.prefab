@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9138099219557426865}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4.9}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9138099220220521379}
@@ -78,9 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77fa7c559ae26e447845c8ef6b26fde6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goldObject: {fileID: 3093148987164399620, guid: 3ef80766eb100cd4bbdf622480302dcd,
+  goldObject: {fileID: 5987402897629445961, guid: 3ef80766eb100cd4bbdf622480302dcd,
     type: 3}
-  powerOrbObject: {fileID: 8102221547201089760, guid: c4a0e6309cd31104cb7851a4716469d0,
+  powerOrbObject: {fileID: 2115553200985759499, guid: c4a0e6309cd31104cb7851a4716469d0,
     type: 3}
 --- !u!33 &9138099220220521391
 MeshFilter:

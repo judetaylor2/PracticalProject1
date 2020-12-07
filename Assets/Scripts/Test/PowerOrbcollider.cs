@@ -6,16 +6,19 @@ public class PowerOrbcollider : MonoBehaviour
 {
 
     public PowerOrbPickup orb;
+    public AudioSource soundCollectOrb;
     // Start is called before the first frame update
     void Start()
     {
+        soundCollectOrb = GetComponent<AudioSource>();
+
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     void OnTriggerEnter(Collider col)
     {
@@ -23,7 +26,16 @@ public class PowerOrbcollider : MonoBehaviour
         {
             Debug.Log("now colliding with the player");
             orb.CollectOrb();
+            PlaySound();
+            
+
         }
     }
-}
 
+    void PlaySound()
+    {
+        soundCollectOrb.Play();
+    }
+    
+ 
+}
