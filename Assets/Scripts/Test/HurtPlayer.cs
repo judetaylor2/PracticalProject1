@@ -7,6 +7,14 @@ public class HurtPlayer : MonoBehaviour
 {
     public int damageToGive = 1;
     public bool knockBack;
+    //public bool readyToDestroy;
+
+    void start()
+    {
+       //readyToDestroy = false;
+    }
+
+
 
     private void OnTriggerStay(Collider other)
     {
@@ -19,10 +27,14 @@ public class HurtPlayer : MonoBehaviour
             if(knockBack)
             {
                 FindObjectOfType<HealthManager>().HurtPlayer(damageToGive, hitDirection);
+                //readyToDestroy = true;
+                //readyToDestroy = false;
             }
             else
             {
                 FindObjectOfType<HealthManager>().HurtPlayerNoKnockBack(damageToGive, hitDirection);
+               //readyToDestroy = true;
+                //readyToDestroy = false;
             }
           
         }    

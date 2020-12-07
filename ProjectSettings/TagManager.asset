@@ -10,6 +10,8 @@ TagManager:
   - Enemy1
   - Crate
   - PowerMeter
+  - BreakablePlatform
+  - Enemy2
   layers:
   - Default
   - TransparentFX

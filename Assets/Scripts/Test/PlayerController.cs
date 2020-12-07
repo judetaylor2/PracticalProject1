@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
 
     //ground pound
     public float groundPoundForce;
-
+    public bool isGroundPounding;
 
 
 
@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
         controller = GetComponent<CharacterController>();
 
+        isGroundPounding = false;
 
     }
 
@@ -93,7 +94,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
+       // Debug.Log(moveDirection.y);
 
+        //Debug.Log(isGroundPounding);
 
         if (knockBackCounter <= 0)
         {
@@ -219,10 +222,13 @@ public class PlayerController : MonoBehaviour
         if (groundPound && !controller.isGrounded && Input.GetKeyDown(KeyCode.LeftShift))
         {
             moveDirection.y = groundPoundForce;
+            isGroundPounding = true;
         }
         else if (controller.isGrounded)
         {
             moveDirection.y = 0f;
+
+            isGroundPounding = false;
         }
 
         //Animate the player
@@ -282,28 +288,33 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.name == "Unlockable1")
         {
             unlockable1 = true;
+            Destroy(GameObject.Find("KeyModel1"));
         }
 
         if (collision.gameObject.name == "Unlockable2")
         {
             stunSlash = true;
+            Destroy(GameObject.Find("KeyModel2"));
         }
 
         if (collision.gameObject.name == "Unlockable3")
         {
             PowerStone = true;
+            Destroy(GameObject.Find("KeyModel3"));
 
         }
 
         if (collision.gameObject.name == "Unlockable4")
         {
             speedGlove = true;
+            Destroy(GameObject.Find("KeyModel4"));
 
         }
 
         if (collision.gameObject.name == "Unlockable5")
         {
             groundPound = true;
+            Destroy(GameObject.Find("KeyModel5"));
 
         }
 
@@ -343,6 +354,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
+                    damage = 1;
                     enemyStuned = true;
                     enemy1.TakeDamage();
                     nextAttackTime = Time.time + stunTime / attackRate;
@@ -354,6 +366,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
+                    
                     enemy1.TakeDamage();
                     nextAttackTime = Time.time + 1f / attackRate;
                 }
@@ -364,6 +377,15 @@ public class PlayerController : MonoBehaviour
 
 
         }
+
+        /*void OnCollisionEnter(Collision other)
+        {
+            if(other.gameObject.tag == "BreakablePlatform" && groundPound && )
+            {
+                Destroy(GameObject.Find("BreakablePlatform"));
+                
+            }
+        }*/
 
     }
 

@@ -7,32 +7,48 @@ public class FollowTarget : MonoBehaviour
     public Transform target;
     public float followSpeed;
     public bool followingPlayer;
-    public float randomNumber;
-  
+    
+    public float expireTime;
+
+    public HurtPlayer hurtPlayer;
+
     // Start is called before the first frame update
     void Start()
     {
-        target = FindObjectOfType<PlayerController>().GetComponent<Transform>();
-        followingPlayer = false;
+        target = GameObject.Find("Player").GetComponent<Transform>();
+        //followingPlayer = false;
+
+        hurtPlayer = GetComponent<HurtPlayer>();
+        transform.LookAt(target.position);
     }
 
     // Update is called once per frame
     void Update()
     {
-        randomNumber = Random.Range(1,10);
+        expireTime += Time.deltaTime;
+        //target = GetComponent<PlayerController>().GetComponent<Transform>();
+        
 
-        if (followingPlayer)
+        transform.Translate(0f, 0f, followSpeed * Time.deltaTime);
+
+        if (expireTime >= 10)
         {
-            transform.LookAt(target.position);
-            transform.Translate(0f, 0f, followSpeed * randomNumber * Time.deltaTime);
+            Destroy(gameObject);
         }
     }
-
-    private void OnTriggerEnter(Collider other)
+    
+    void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player")
+        Debug.Log("Collided with player");
+        //Destroy(gameObject);
+
+        
+        if (other.gameObject.tag == "Player")
         {
-            followingPlayer = true;
+            Destroy(gameObject);
         }
+
+
     }
+
 }

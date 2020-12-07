@@ -29,9 +29,19 @@ public class Enemy1 : MonoBehaviour
     public float attackRate;
     private float attackDelay = 0f;
     public float attackDelayTime;
-    
 
-    
+    public GameObject bullet;
+    public bool usingProjectiles;
+
+    private float projectileTimer;
+
+    public float speed;
+
+    public GameObject coin;
+    public GameObject powerOrb;
+    private int orbCount;
+    public int orbDropAmount;
+    //public float projectileDelayTime;
 
     //public int minHealth;
 
@@ -43,6 +53,12 @@ public class Enemy1 : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         enemyHealthBar.SetMaxHealth(maxHealth);
         enemyHealth = maxHealth;
+        
+        if (usingProjectiles)
+        {
+            agent.speed = speed;
+        }
+
     }
 
     // Update is called once per frame
@@ -50,24 +66,57 @@ public class Enemy1 : MonoBehaviour
     {
         float distance = Vector3.Distance(target.position, transform.position);
 
+        projectileTimer = projectileTimer + Time.deltaTime;
+
         if (distance < lookRadius)
         {
+
+            FaceTarget();
             agent.SetDestination(target.position);
 
-            if (distance <= agent.stoppingDistance)
+
+            if (usingProjectiles)
+            {
+                agent.speed = 0;
+            }
+
+            if (usingProjectiles && projectileTimer >= 1.25)
+            {
+                Instantiate(bullet, transform.position, transform.rotation);
+                projectileTimer = 0f;
+            }
+
+            
+
+            
+
+            /*if (distance <= agent.stoppingDistance)
             {
                 //attack the player/target and face them
                 FaceTarget();
+            
+            }*/
+        }
+        else
+        {
+            projectileTimer = 0f;
 
+            if(usingProjectiles)
+            {
+                agent.speed = speed;
             }
+     
         }
     }
 
     void FaceTarget()
     {
-        Vector3 direction = (target.position - transform.position).normalized;
+
+        transform.LookAt(target.position);
+        /*Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.x));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);*/
+
     }
 
     void OnDrawGizmosSelected()
@@ -89,6 +138,14 @@ public class Enemy1 : MonoBehaviour
         if (enemyHealth <= 0)
         {
             Destroy(gameObject);
+            Instantiate(coin, transform.position, transform.rotation);
+            
+            while (orbCount < orbDropAmount)
+            {
+                Instantiate(powerOrb, transform.position, transform.rotation);
+                orbCount++;
+            }
+            
         }
 
 
