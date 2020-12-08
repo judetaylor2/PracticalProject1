@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+
+    //hides code
     #region  Singleton
 
+    //gameObjects
     public static PlayerManager instance;
 
     private void Awake()

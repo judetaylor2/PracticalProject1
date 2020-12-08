@@ -6,35 +6,41 @@ using UnityEngine;
 
 public class PowerOrbPickup : MonoBehaviour
 {
+    //variables
 
+    //points
     public int value;
     public int PointsToGive;
 
+    //objects
     public GameObject pickupEffect;
+
+    //scripts
     public HealthBar powerMeter;
     public PlayerController player;
 
     //public Collider col;
 
+    //movement
     public Transform target;
     public float followSpeed;
     public bool followingPlayer;
-    public float randomNumber;
+    
 
     // Start is called before the first frame update
     void Start()
-    {
+    {  
+        //assign variables and set values
         target = FindObjectOfType<PlayerController>().GetComponent<Transform>();
         powerMeter = GameObject.FindGameObjectsWithTag("PowerMeter")[0].GetComponent<HealthBar>();
         player = FindObjectOfType<PlayerController>();
-        followingPlayer = false;
-        gameObject.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        randomNumber = Random.Range(1, 10);
+        
+        //follows the transform of the player
 
         if (followingPlayer)
         {
@@ -44,6 +50,8 @@ public class PowerOrbPickup : MonoBehaviour
 
     }
 
+
+    //instantiate the orb pickup effect, add the orb value to the powermeter and destroy the gameobject
     public void CollectOrb()
     {
 
@@ -56,6 +64,7 @@ public class PowerOrbPickup : MonoBehaviour
 
     }
 
+    //follows the player when they enter the trigger
     void OnTriggerEnter()
     {
         followingPlayer = true;

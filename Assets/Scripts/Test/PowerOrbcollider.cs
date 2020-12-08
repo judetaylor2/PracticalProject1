@@ -5,21 +5,23 @@ using UnityEngine;
 public class PowerOrbcollider : MonoBehaviour
 {
 
+    //gameobjects
     public PowerOrbPickup orb;
+
+    //sound
     public AudioSource soundCollectOrb;
+
     // Start is called before the first frame update
     void Start()
     {
+        //assign variables and set values
+
         soundCollectOrb = GetComponent<AudioSource>();
 
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    // if the player is in the trigger, then run the Orbs' collectOrb method and play the sound for collecting orbs
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == "Player")
@@ -32,6 +34,7 @@ public class PowerOrbcollider : MonoBehaviour
         }
     }
 
+    //sound still only plays in the trigger, i need to fix this later
     void PlaySound()
     {
         soundCollectOrb.Play();

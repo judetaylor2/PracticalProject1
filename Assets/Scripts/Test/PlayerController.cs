@@ -112,6 +112,7 @@ public class PlayerController : MonoBehaviour
 
         //Debug.Log(isGroundPounding);
 
+        //if the player is not being knocked back, then run the following
         if (knockBackCounter <= 0)
         {
             //move the player (X and Z)
@@ -120,12 +121,15 @@ public class PlayerController : MonoBehaviour
             moveDirection = moveDirection.normalized * moveSpeed;
             moveDirection.y = yStore;
 
-
+            //if the player controller is touching the ground, then reset the double jump and the jumpforce
             if (controller.isGrounded)
             {
                 jumpForce = jumpForceGround;
                 doubleJump = 0;
+                moveDirection.y = 0f;
+                jumping = false;
             }
+
 
             if (unlockable1)
             {
@@ -135,135 +139,147 @@ public class PlayerController : MonoBehaviour
 
                     if (Input.GetButtonDown("Jump"))
                     {
+
+                        //if the jump count is below 1, then add the extra jump height to the next jump, make jumping true and play doublejump sound
                         if (doubleJump == 1)
                         {
-                            jumpForce = jumpForce + secondJump;
                             jumping = true;
-                            
+
                             soundDoubleJump.Play();
+
+                            jumpForce = jumpForce + secondJump;
+
 
                         }
 
+                        //make the player jump, adds 1 to the jump counter and play the jump sound
                         moveDirection.y = jumpForce;
-                        doubleJump = (doubleJump + 1);
+                        doubleJump++;
 
                         soundJump.Play();
+
+                        //}
                     }
+                    /*else if (doubleJump >= 2) //if doublejump is two (or more)
+                    {
+                        //reset move directions and doublejump counter
+                        if (controller.isGrounded)
+                        {
+                            moveDirection.y = 0f;
+                            doubleJump = 0;
+                            jumping = false;
+
+                        }
+                    }*/
+
                 }
-                else if (doubleJump >= 2)
+                else //jumps once if the unlockable1 is not unlocked
                 {
                     if (controller.isGrounded)
                     {
-                        moveDirection.y = 0f;
-                        doubleJump = 0;
-                        jumping = false;
-                        
+                        if (Input.GetButtonDown("Jump"))
+                        {
+                            moveDirection.y = jumpForce;
+                            doubleJump = (doubleJump++);
+                            soundJump.Play();
+                        }
                     }
                 }
+
+            }
+            else //count down the knockback by the time
+            {
+                knockBackCounter -= Time.deltaTime;
+            }
+
+            //allows the player to move properly
+            moveDirection.y = moveDirection.y + (Physics.gravity.y * gravityScale * Time.deltaTime);
+            controller.Move(moveDirection * Time.deltaTime);
+
+            //if any input is detected by unit's "Horizontal" and "Vertical" axis
+            if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+            {
+                //if the player is not in a wall trigger, then build up momentum as normal
+                if (!isTouchingWall)
+                {
+                    moveSpeed = moveSpeed + momentumIncrease;
+                }
+
+                //soundRun.Play();
+
+                //move the player in different directions based on camera look direction
+                transform.rotation = Quaternion.Euler(0f, pivot.rotation.eulerAngles.y, 0f);
+                Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 0f, moveDirection.z));
+                playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
+
+            }
+            //decrease momentum when the player is idle
+            else if (Input.GetAxisRaw("Horizontal") == 0 || Input.GetAxisRaw("Vertical") == 0)
+            {
+                moveSpeed = moveSpeed - (momentumIncrease * momentumDecrease);
+            }
+
+            //stops the movespeed being below the minimum movespeed
+            if (moveSpeed <= minMoveSpeed)
+            {
+                moveSpeed = minMoveSpeed;
+            }
+
+            //stops the movespeed being below the maximum movespeed
+            if (moveSpeed >= maxMoveSpeed)
+            {
+                moveSpeed = maxMoveSpeed;
+            }
+
+            //allows the powermeter to be used when full
+            if (powerMeter.slider.value == powerMeter.slider.maxValue)
+            {
+                PowerMeterComplete();
+            }
+            //-----------------------------------------------------------------------------------
+            if (PowerStone)
+            {
+                powerMeterDuration = maxPowerMeterDuration;
             }
             else
             {
-                if (controller.isGrounded)
-                {
-                    if (Input.GetButtonDown("Jump"))
-                    {
-                        moveDirection.y = jumpForce;
-                        doubleJump = (doubleJump++);
-                        soundJump.Play();
-                    }
-                }
+                powerMeterDuration = minPowerMeterDuration;
             }
 
-        }
-        else
-        {
-            knockBackCounter -= Time.deltaTime;
-        }
-
-
-        moveDirection.y = moveDirection.y + (Physics.gravity.y * gravityScale * Time.deltaTime);
-        controller.Move(moveDirection * Time.deltaTime);
-
-        //move the player in different directions based on camera look direction
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-        {
-            if (!isTouchingWall)
+            if (speedGlove)
             {
-                moveSpeed = moveSpeed + momentumIncrease;
+                attackRate = maxAttackRate;
             }
-            
-            //soundRun.Play();
+            else
+            {
+                attackRate = minAttackRate;
+            }
+
+            if (groundPound && !controller.isGrounded && Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                moveDirection.y = groundPoundForce;
+                isGroundPounding = true;
+                soundGroundPound.Play();
+            }
+            else if (controller.isGrounded)
+            {
+                moveDirection.y = 0f;
+
+                isGroundPounding = false;
 
 
-            transform.rotation = Quaternion.Euler(0f, pivot.rotation.eulerAngles.y, 0f);
-            Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 0f, moveDirection.z));
-            playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
+            }
+
+            //Animate the player
+            anim.SetBool("isGrounded", controller.isGrounded);
+            anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal"))));
+
+            if (jumping = false && !controller.isGrounded)
+            {
+                moveDirection.y = 0;
+            }
 
         }
-        //player is idle
-        else if (Input.GetAxisRaw("Horizontal") == 0 || Input.GetAxisRaw("Vertical") == 0)
-        {
-            moveSpeed = moveSpeed - (momentumIncrease * momentumDecrease);
-        }
-
-        //
-        if (moveSpeed <= minMoveSpeed)
-        {
-            moveSpeed = minMoveSpeed;
-        }
-
-        if (moveSpeed > maxMoveSpeed)
-        {
-            moveSpeed = maxMoveSpeed;
-        }
-
-        if (powerMeter.slider.value == powerMeter.slider.maxValue)
-        {
-            PowerMeterComplete();
-        }
-        //-----------------------------------------------------------------------------------
-        if (PowerStone)
-        {
-            powerMeterDuration = maxPowerMeterDuration;
-        }
-        else
-        {
-            powerMeterDuration = minPowerMeterDuration;
-        }
-
-        if (speedGlove)
-        {
-            attackRate = maxAttackRate;
-        }
-        else
-        {
-            attackRate = minAttackRate;
-        }
-
-        if (groundPound && !controller.isGrounded && Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            moveDirection.y = groundPoundForce;
-            isGroundPounding = true;
-            soundGroundPound.Play();
-        }
-        else if (controller.isGrounded)
-        {
-            moveDirection.y = 0f;
-
-            isGroundPounding = false;
-            
-            
-        }
-
-        //Animate the player
-        anim.SetBool("isGrounded", controller.isGrounded);
-        anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal"))));
-
-        if (jumping = false && !controller.isGrounded)
-        {
-            moveDirection.y = 0;
-        }
-
     }
 
 
@@ -309,7 +325,7 @@ public class PlayerController : MonoBehaviour
         //material change
     }
 
-    public void OnTriggerEnter(Collider collision)
+    void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.name == "Unlockable1")
         {
@@ -352,7 +368,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void OnTriggerStay(Collider collision)
+    void OnTriggerStay(Collider collision)
     {
         if (collision.gameObject.tag == "Wall")
         {
@@ -405,34 +421,34 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        
+
 
         /*void OnCollisionEnter(Collision other)
         {
             if(other.gameObject.tag == "BreakablePlatform" && groundPound && )
             {
                 Destroy(GameObject.Find("BreakablePlatform"));
-                
+
             }
         }*/
 
     }
 
-    private void OnTriggerExit(Collider collision)
+    //when no longer in the wall trigger, then set isTouchingWall to false
+
+    void OnTriggerExit(Collider collision)
     {
-     
+
 
         if (collision.gameObject.tag == "Wall")
         {
             isTouchingWall = false;
         }
-   
 
 
-    }   
 
-    private void OnCollisionExit(Collision col)
-    {
-        moveDirection.y = -gravityScale;
     }
-}       
+
+
+    }
+

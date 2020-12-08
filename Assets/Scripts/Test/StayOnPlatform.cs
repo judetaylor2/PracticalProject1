@@ -4,21 +4,10 @@ using UnityEngine;
 
 public class StayOnPlatform : MonoBehaviour
 {
-
+    //variables
     public GameObject player;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    //if the player is in the trigger, then they will become a child of the platform meaning that it will move with it
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject == player)
@@ -28,6 +17,7 @@ public class StayOnPlatform : MonoBehaviour
         }
     }
 
+    //when the player exits the trigger, they no longer become a child of the platform 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == player)
