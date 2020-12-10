@@ -26,7 +26,7 @@ public class PowerOrbcollider : MonoBehaviour
     {
         if (col.tag == "Player")
         {
-            Debug.Log("now colliding with the player");
+            Debug.Log("orb now colliding with the player");
             orb.CollectOrb();
             PlaySound();
             

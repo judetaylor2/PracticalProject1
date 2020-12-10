@@ -20,7 +20,7 @@ public class GoldPickup : MonoBehaviour
     public Transform target;
     public float followSpeed;
     public bool followingPlayer;
-    public float randomNumber;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +39,7 @@ public class GoldPickup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        randomNumber = Random.Range(1, 10);
+        
 
         //pickupEffect = GameObject.Find("/Gold Pickup Effect");
 

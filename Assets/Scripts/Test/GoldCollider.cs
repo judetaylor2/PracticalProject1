@@ -16,18 +16,11 @@ public class GoldCollider : MonoBehaviour
         //pickupEffect = GameObject.Find("/Gold Pickup Effect");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-      
-    }
-
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == "Player")
         {
-            Debug.Log("now colliding with the player");
+            Debug.Log("gold now colliding with the player");
             gold.CollectGold();
             PlaySound();
         }
