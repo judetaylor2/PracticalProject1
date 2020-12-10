@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4437963671275522761}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.11, y: 5.3121014, z: 6.64}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 1, z: 2}
   m_Children:
   - {fileID: 1766750716798794882}
@@ -54,7 +54,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageToGive: 1
   knockBack: 0
-  readyToDestroy: 0
 --- !u!33 &4437963671275522765
 MeshFilter:
   m_ObjectHideFlags: 0

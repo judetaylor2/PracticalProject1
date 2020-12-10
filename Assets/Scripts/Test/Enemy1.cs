@@ -32,7 +32,7 @@ public class Enemy1 : MonoBehaviour
 
     public GameObject bullet;
     public bool usingProjectiles;
-
+    private bool stopShooting;
     private float projectileTimer;
 
     public float speed;
@@ -71,7 +71,7 @@ public class Enemy1 : MonoBehaviour
         if (distance < lookRadius)
         {
 
-            FaceTarget();
+            //FaceTarget();
             agent.SetDestination(target.position);
 
 
@@ -80,7 +80,7 @@ public class Enemy1 : MonoBehaviour
                 agent.speed = 0;
             }
 
-            if (usingProjectiles && projectileTimer >= 1.25)
+            if (usingProjectiles && !stopShooting && projectileTimer >= 1.25)
             {
                 Instantiate(bullet, transform.position, transform.rotation);
                 projectileTimer = 0f;
@@ -90,12 +90,12 @@ public class Enemy1 : MonoBehaviour
 
             
 
-            /*if (distance <= agent.stoppingDistance)
+            if (distance <= agent.stoppingDistance)
             {
                 //attack the player/target and face them
+                stopShooting = true;
                 FaceTarget();
-            
-            }*/
+            }
         }
         else
         {
@@ -112,10 +112,10 @@ public class Enemy1 : MonoBehaviour
     void FaceTarget()
     {
 
-        transform.LookAt(target.position);
-        /*Vector3 direction = (target.position - transform.position).normalized;
+        //transform.LookAt(target.position);
+        Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.x));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);*/
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
 
     }
 
@@ -183,9 +183,10 @@ public class Enemy1 : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         nextAttackTime = Time.time + 1f / attackRate;
 
-        
+        stopShooting = true;
 
     }
 
@@ -222,6 +223,11 @@ public class Enemy1 : MonoBehaviour
 
             }
         }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        stopShooting = false;
     }
 
 }

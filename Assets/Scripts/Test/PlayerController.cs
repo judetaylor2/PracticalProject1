@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviour
 
                             soundDoubleJump.Play();
 
-                            jumpForce = jumpForce + secondJump;
+                            jumpForce += secondJump;
 
 
                         }
@@ -173,23 +173,24 @@ public class PlayerController : MonoBehaviour
                     }*/
 
                 }
-                else //jumps once if the unlockable1 is not unlocked
-                {
-                    if (controller.isGrounded)
-                    {
-                        if (Input.GetButtonDown("Jump"))
-                        {
-                            moveDirection.y = jumpForce;
-                            doubleJump = (doubleJump++);
-                            soundJump.Play();
-                        }
-                    }
-                }
+                
+                
 
             }
-            else //count down the knockback by the time
+            else
             {
-                knockBackCounter -= Time.deltaTime;
+                
+
+                if (controller.isGrounded) //jump once if the unlockable1 is not unlocked
+                {
+                    if (Input.GetButtonDown("Jump"))
+                    {
+                        moveDirection.y = jumpForce;
+                        doubleJump = (doubleJump++);
+                        soundJump.Play();
+                    }
+                }
+                
             }
 
             //allows the player to move properly
@@ -236,32 +237,32 @@ public class PlayerController : MonoBehaviour
             {
                 PowerMeterComplete();
             }
-            //-----------------------------------------------------------------------------------
+            //changes the power meter duration once the player gets the power stone
             if (PowerStone)
             {
                 powerMeterDuration = maxPowerMeterDuration;
             }
-            else
+            else //changes the duration back to default if the player no longer has the powerstone
             {
                 powerMeterDuration = minPowerMeterDuration;
             }
 
-            if (speedGlove)
+            if (speedGlove) // changes the attack rate once the plaeyr gets the power glove
             {
                 attackRate = maxAttackRate;
             }
-            else
+            else //changes the attackrate back to default if the player no longer has the power glove
             {
                 attackRate = minAttackRate;
             }
 
-            if (groundPound && !controller.isGrounded && Input.GetKeyDown(KeyCode.LeftShift))
+            if (groundPound && !controller.isGrounded && Input.GetKeyDown(KeyCode.LeftShift)) //if the left shift key is pressed while the player is on the ground and has the ground pound unlocked, then the player will be able to ground pound.
             {
                 moveDirection.y = groundPoundForce;
                 isGroundPounding = true;
                 soundGroundPound.Play();
             }
-            else if (controller.isGrounded)
+            else if (controller.isGrounded) // if the player has the ground pound but is on the ground, then the player will not be able to ground pound
             {
                 moveDirection.y = 0f;
 
@@ -274,16 +275,31 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("isGrounded", controller.isGrounded);
             anim.SetFloat("speed", (Mathf.Abs(Input.GetAxisRaw("Vertical")) + Mathf.Abs(Input.GetAxisRaw("Horizontal"))));
 
-            if (jumping = false && !controller.isGrounded)
+
+            /*if (jumping = false && !controller.isGrounded)
             {
                 moveDirection.y = 0;
+            }*/
+
+            // play the attack sound even if there is no attack
+            if (Time.time >= nextAttackTime && Input.GetKeyDown(KeyCode.Mouse0))
+            {
+
+                soundAttack1.Play();
+                nextAttackTime = Time.time + 1f / attackRate;
+
             }
 
+
+        }
+        else  //count down the knockback counter
+        {
+            knockBackCounter -= Time.deltaTime;
         }
     }
 
 
-    //player knockback
+    //knock the player back and set the players movespeed back to minimum
     public void KnockBack(Vector3 direction)
     {
         knockBackCounter = knockBackTime;
@@ -295,6 +311,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    //if the 'e' key is pressed while the power meter is ready, double some of the players stats for a limited time 
     public void PowerMeterComplete()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -314,7 +331,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void StopPowerMeter()
+    public void StopPowerMeter() // change damage back to defaults after the power meter stat boost has expired
     {
         damage = damage / 2;
 
@@ -327,6 +344,8 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider collision)
     {
+
+        // if the player is collding with unlockable platforms, then enable the unlockable abilities and destroy the key model ontop of it
         if (collision.gameObject.name == "Unlockable1")
         {
             unlockable1 = true;
@@ -360,16 +379,11 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (collision.gameObject.name == "Goal")
-        {
-            SceneManager.LoadScene("Level 1");
-
-        }
-
     }
 
     void OnTriggerStay(Collider collision)
     {
+        // if the player is inside of a wall trigger, then set the players movespeed to the minimum so the player will not gain any momentum
         if (collision.gameObject.tag == "Wall")
         {
             isTouchingWall = true;
@@ -377,6 +391,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
+        //if the player is in a crate trigger and pressing the left mouse button, then destroy that crate
         if (collision.gameObject.tag == "Crate")
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -387,36 +402,40 @@ public class PlayerController : MonoBehaviour
 
         }
 
+
+        //if the player is in the enemy trigger, the stunslash is true, the timer is ready andthe right mouse button is pressed, then stun the enemy for limited time
         if (collision.gameObject.tag == "Enemy1")
         {
 
             enemy1 = collision.gameObject.GetComponent<Enemy1>();
 
-            if (stunSlash)
+            if (stunSlash && Time.time >= nextAttackTime && Input.GetKeyDown(KeyCode.Mouse1))
             {
-                if (Input.GetKeyDown(KeyCode.Mouse1))
-                {
-                    soundAttack2.Play();
-                    damage = 1;
-                    enemyStuned = true;
-                    enemy1.TakeDamage();
-                    nextAttackTime = Time.time + stunTime / attackRate;
-                    damage = 5;
-                }
-            }
 
-            if (Time.time >= nextAttackTime)
-            {
-                if (Input.GetKeyDown(KeyCode.Mouse0))
-                {
-                    soundAttack1.Play();
-                    enemy1.TakeDamage();
-                    nextAttackTime = Time.time + 1f / attackRate;
-                }
+                soundAttack2.Play();
+                damage = 1;
+                enemyStuned = true;
+                enemy1.TakeDamage();
+                nextAttackTime = Time.time + stunTime / attackRate;
+                damage = 5;
 
             }
 
+            //if the attack timer is ready and the left mouse button is pressed, damage the enemy and then count make the nextAttackTime counter restart
+            if (Time.time >= nextAttackTime && Input.GetKeyDown(KeyCode.Mouse0))
+            {
 
+                //soundAttack1.Play();
+                enemy1.TakeDamage();
+
+                /*Vector3 hitDirection = collision.transform.position - transform.position;
+                hitDirection = hitDirection.normalized;*/
+
+                nextAttackTime = Time.time + 1f / attackRate;
+
+            }
+
+            
 
 
         }
@@ -434,12 +453,14 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    //when no longer in the wall trigger, then set isTouchingWall to false
+
+
+    //when no longer in the wall trigger, then set isTouchingWall to false allowing the player to move again
 
     void OnTriggerExit(Collider collision)
     {
 
-
+        
         if (collision.gameObject.tag == "Wall")
         {
             isTouchingWall = false;
