@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Goal : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class Goal : MonoBehaviour
 
     public void Load()
     {
-        //SceneManager.LoadScene("Level 1");
+        SceneManager.LoadScene(2);
     }
 
     private void OnTriggerEnter(Collider collider)
