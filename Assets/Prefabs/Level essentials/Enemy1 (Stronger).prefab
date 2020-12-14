@@ -324,7 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointsToGive: 30
-  lookRadius: 20
+  lookRadius: 15
   enemyHealth: 25
   player: {fileID: 0}
   testBool: 0

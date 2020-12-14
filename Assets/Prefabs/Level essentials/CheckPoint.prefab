@@ -51,6 +51,8 @@ MonoBehaviour:
   theRenderer: {fileID: 3916669192758557433}
   checkPointOff: {fileID: 2100000, guid: 4c6bdee6d474ce2439623eea5d6b5dc0, type: 2}
   checkPointOn: {fileID: 2100000, guid: 4bd28e0ec28d35a40a09fdadfbd02d3d, type: 2}
+  checkPointEffect: {fileID: 4081102082452160994, guid: 99f0e7c2a8daa9f47a65c7e50e23d861,
+    type: 3}
 --- !u!33 &3916669192758557434
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -13,12 +13,11 @@ public class Switch : MonoBehaviour
     void Start()
     {
         //set values
-        switchOn = false;
     }
 
     void Update()
     {
-        if (switchOn)
+        /*if (switchOn)
         {
             //controls whether the object is active when the switch is in and off 
             foreach (GameObject theObject in switchObjects)
@@ -33,7 +32,16 @@ public class Switch : MonoBehaviour
             {
                 theObject.SetActive(switchOn); // uses switchOn's true or false value
             }
+        }*/
+
+        if (switchOn)
+        {
+           
         }
+
+        //controls whether the object is active when the switch is in and off 
+        
+
 
         //if the switch is timed, then set switchOn to false after a certain amount of time
         if (timedSwitch == true && switchOn == true) 
@@ -49,16 +57,28 @@ public class Switch : MonoBehaviour
     {
         if(col.gameObject.tag == "Player")
         {
-            if(switchOn)
+            /*if(switchOn)
             {
                 switchOn = false;
             }
             else
             {
                 switchOn = true;
-            }
-            
+            }*/
 
+            foreach (GameObject theObject in switchObjects)
+            {
+                if (switchOn)
+                {
+                    theObject.SetActive(!theObject.active);
+
+                }
+                else if (!switchOn)
+                {
+                    theObject.SetActive(!theObject.active);
+                }
+
+            }
 
         }
     }
