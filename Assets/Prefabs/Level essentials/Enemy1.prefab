@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointsToGive: 30
-  lookRadius: 12.5
+  lookRadius: 17.5
   enemyHealth: 15
   player: {fileID: 0}
   testBool: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   attackDelayTime: 3.25
   bullet: {fileID: 0}
   usingProjectiles: 0
-  speed: 0
+  speed: 3
   coin: {fileID: 3093148987164399620, guid: 3ef80766eb100cd4bbdf622480302dcd, type: 3}
   powerOrb: {fileID: 8102221547201089760, guid: c4a0e6309cd31104cb7851a4716469d0,
     type: 3}

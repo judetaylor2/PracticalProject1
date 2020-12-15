@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -86,6 +87,10 @@ public class PlayerController : MonoBehaviour
     public AudioSource soundAttack2;
     public AudioSource soundGroundPound;
     //public AudioSource sound;
+
+    //text
+    public Text unlockableText;
+    public Text unlockableText2;
 
 
 
@@ -342,41 +347,60 @@ public class PlayerController : MonoBehaviour
         //material change
     }
 
+    public IEnumerator HideText()
+    {
+        yield return new WaitForSeconds(1f);
+        unlockableText.text = "";
+        unlockableText2.text = "";
+    }
+
     void OnTriggerEnter(Collider collision)
     {
 
-        // if the player is collding with unlockable platforms, then enable the unlockable abilities and destroy the key model ontop of it
+        // if the player is collding with unlockable platforms, then enable the unlockable abilities, display text for a limited time and destroy the key model ontop of it
         if (collision.gameObject.name == "Unlockable1")
         {
             unlockable1 = true;
             Destroy(GameObject.Find("KeyModel1"));
+            unlockableText.text = "You found the 'Rocket boots!'";
+            unlockableText2.text = "you can now perform a double jump\nby pressing space while in mid-air";
+            StartCoroutine(HideText());
         }
 
         if (collision.gameObject.name == "Unlockable2")
         {
             stunSlash = true;
             Destroy(GameObject.Find("KeyModel2"));
+            unlockableText.text = "You found the 'Stun Slash!'";
+            unlockableText2.text = "When close enough to an enemy \nyou can now press mouse2 to stun them";
+            StartCoroutine(HideText());
         }
 
         if (collision.gameObject.name == "Unlockable3")
         {
             PowerStone = true;
             Destroy(GameObject.Find("KeyModel3"));
-
+            unlockableText.text = "You found the 'PowerStone!'";
+            unlockableText2.text = "your powermeter will now last longer'";
+            StartCoroutine(HideText());
         }
 
         if (collision.gameObject.name == "Unlockable4")
         {
             speedGlove = true;
             Destroy(GameObject.Find("KeyModel4"));
-
+            unlockableText.text = "You found the 'SpeedGlove!'";
+            unlockableText2.text = "you will now attack enemies faster";
+            StartCoroutine(HideText());
         }
 
         if (collision.gameObject.name == "Unlockable5")
         {
             groundPound = true;
             Destroy(GameObject.Find("KeyModel5"));
-
+            unlockableText.text = "You found the 'GroundPound!'";
+            unlockableText2.text = "you can now quickly move back to the ground \nwhile in mid-air and break wooden platforms";
+            StartCoroutine(HideText());
         }
 
     }
