@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4968557314399616592}
   - component: {fileID: 4968557314399616595}
   - component: {fileID: 4968557314399616594}
+  - component: {fileID: -2134826629340585397}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Enemy1
@@ -53,7 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointsToGive: 30
-  lookRadius: 17.5
+  lookRadius: 20
   enemyHealth: 15
   player: {fileID: 0}
   testBool: 0
@@ -62,16 +63,17 @@ MonoBehaviour:
   powerMeter: {fileID: 0}
   gameManager: {fileID: 0}
   maxHealth: 15
-  damageToGive: 1
+  damageToGive: 2
   attackRate: 1
-  attackDelayTime: 3.25
+  attackDelayTime: 0.2
   bullet: {fileID: 0}
   usingProjectiles: 0
-  speed: 3
+  speed: 10
   coin: {fileID: 3093148987164399620, guid: 3ef80766eb100cd4bbdf622480302dcd, type: 3}
   powerOrb: {fileID: 8102221547201089760, guid: c4a0e6309cd31104cb7851a4716469d0,
     type: 3}
   orbDropAmount: 3
+  soundHurtPlayer: {fileID: -2134826629340585397}
 --- !u!33 &4968557314399616599
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -143,7 +145,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 2.29
+  m_Radius: 3
   m_Height: 7.5
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -157,7 +159,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.2
-  m_Speed: 4.75
+  m_Speed: 10
   m_Acceleration: 20
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -185,6 +187,102 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!82 &-2134826629340585397
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4968557314399616605}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 72127805eb2bc4e7fbf2e02eca266cfa, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4968557314545801943
 GameObject:
   m_ObjectHideFlags: 0

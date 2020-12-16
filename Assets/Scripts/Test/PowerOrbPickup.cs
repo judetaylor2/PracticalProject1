@@ -8,15 +8,7 @@ public class PowerOrbPickup : MonoBehaviour
 {
     //variables
 
-    //points
-    public int value;
-    public int PointsToGive;
-
-    //objects
-    public GameObject pickupEffect;
-
     //scripts
-    public HealthBar powerMeter;
     public PlayerController player;
 
     //public Collider col;
@@ -32,7 +24,7 @@ public class PowerOrbPickup : MonoBehaviour
     {  
         //assign variables and set values
         target = FindObjectOfType<PlayerController>().GetComponent<Transform>();
-        powerMeter = GameObject.FindGameObjectsWithTag("PowerMeter")[0].GetComponent<HealthBar>();
+        
         player = FindObjectOfType<PlayerController>();
     }
 
@@ -51,7 +43,7 @@ public class PowerOrbPickup : MonoBehaviour
     }
 
 
-    //instantiate the orb pickup effect, add the orb value to the powermeter and destroy the gameobject
+    /*//instantiate the orb pickup effect, add the orb value to the powermeter and destroy the gameobject
     public void CollectOrb()
     {
 
@@ -62,7 +54,7 @@ public class PowerOrbPickup : MonoBehaviour
         Destroy(gameObject);
 
 
-    }
+    }*/
 
     //follows the player when they enter the trigger
     void OnTriggerEnter()
@@ -70,11 +62,6 @@ public class PowerOrbPickup : MonoBehaviour
         followingPlayer = true;
     }
 
-
-    /*public void replaceGold(GameObject object1)
-    {
-        Instantiate(gameObject);
-    }*/
 }
 
 

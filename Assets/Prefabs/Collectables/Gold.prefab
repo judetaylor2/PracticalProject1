@@ -46,8 +46,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43452de74a96ec341a0ec8454c69d4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gold: {fileID: 5987402897629445963}
+  value: 0
+  PointsToGive: 0
+  powerMeter: {fileID: 0}
   soundCollectGold: {fileID: 551767858730368048}
+  collect: 0
+  goldObject: {fileID: 2132317956960803527}
+  pickupEffect: {fileID: 3606314579831137431, guid: cf25fe77d2df2e14884eac9cb343f071,
+    type: 3}
+  gameManager: {fileID: 0}
+  healthManager: {fileID: 0}
+  player: {fileID: 0}
+  target: {fileID: 0}
 --- !u!65 &551767859773231686
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -72,7 +82,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 79180f511d89441b9aa23ccae1992fe0, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.256
   m_Pitch: 1.5
   Loop: 0
@@ -293,7 +303,6 @@ MonoBehaviour:
   target: {fileID: 0}
   followSpeed: 2.5
   followingPlayer: 0
-  randomNumber: 0
 --- !u!65 &340059012642492027
 BoxCollider:
   m_ObjectHideFlags: 0

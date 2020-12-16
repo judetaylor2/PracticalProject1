@@ -7,12 +7,7 @@ using UnityEngine;
 public class GoldPickup : MonoBehaviour
 {
 
-    public int value;
-    public int PointsToGive;
 
-    public GameObject pickupEffect;
-    public GameManager gameManager;
-    public HealthManager healthManager;
     public PlayerController player;
 
     //public Collider col;
@@ -28,8 +23,6 @@ public class GoldPickup : MonoBehaviour
         
         target = FindObjectOfType<PlayerController>().GetComponent<Transform>();
         player = FindObjectOfType<PlayerController>();
-        healthManager = FindObjectOfType<HealthManager>();
-        gameManager = FindObjectOfType<GameManager>();
 
         followingPlayer = false;
         gameObject.SetActive(true);
@@ -58,7 +51,7 @@ public class GoldPickup : MonoBehaviour
 
     }
 
-    public void CollectGold()
+    /*public void CollectGold()
     {
         /*if (other.tag == "Player")
         {
@@ -67,7 +60,7 @@ public class GoldPickup : MonoBehaviour
             Instantiate(pickupEffect, transform.position, transform.rotation);
             healthManager.HealPlayer(1);
             Destroy(gameObject);
-        }*/
+        }
 
         //pickupEffect = GameObject.Find("Gold Pickup Effect")
 
@@ -81,17 +74,11 @@ public class GoldPickup : MonoBehaviour
 
         //pickupEffect = null;
 
-    }
+    }*/
 
     void OnTriggerEnter()
     {
         followingPlayer = true;
     }
-
-
-    /*public void replaceGold(GameObject object1)
-    {
-        Instantiate(gameObject);
-    }*/
 }
 

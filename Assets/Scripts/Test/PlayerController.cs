@@ -86,12 +86,18 @@ public class PlayerController : MonoBehaviour
     public AudioSource soundAttack1;
     public AudioSource soundAttack2;
     public AudioSource soundGroundPound;
+    public AudioSource soundUnlockable;
+    public AudioSource soundAttack3;
     //public AudioSource sound;
 
     //text
     public Text unlockableText;
     public Text unlockableText2;
 
+    //particles
+    private bool powerMeterParticleActive;
+    public GameObject powerMeterParticle;
+    public GameObject doubleJumpEffect;
 
 
     // Start is called before the first frame update (Will only happen once)
@@ -102,10 +108,11 @@ public class PlayerController : MonoBehaviour
 
         isGroundPounding = false;
 
-        //sound
-        //jumpSound = GetComponent<AudioSource>()
+        powerMeterParticleActive = false;
+    //sound
+    //jumpSound = GetComponent<AudioSource>()
 
-    }
+}
 
     // Update is called once per frame (Repeats every frame)
     void Update()
@@ -116,6 +123,10 @@ public class PlayerController : MonoBehaviour
         // Debug.Log(moveDirection.y);
 
         //Debug.Log(isGroundPounding);
+        if (powerMeterParticleActive)
+        {
+            StartCoroutine("PowerMeterParticleDelay");
+        }
 
         //if the player is not being knocked back, then run the following
         if (knockBackCounter <= 0)
@@ -149,6 +160,8 @@ public class PlayerController : MonoBehaviour
                         if (doubleJump == 1)
                         {
                             jumping = true;
+
+                            Instantiate(doubleJumpEffect, transform.position, transform.rotation);
 
                             soundDoubleJump.Play();
 
@@ -303,6 +316,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public IEnumerator PowerMeterParticleDelay()
+    {
+        yield return new WaitForSeconds(1);
+        Instantiate(powerMeterParticle, transform.position, transform.rotation);
+
+    }
+
 
     //knock the player back and set the players movespeed back to minimum
     public void KnockBack(Vector3 direction)
@@ -319,14 +339,25 @@ public class PlayerController : MonoBehaviour
     //if the 'e' key is pressed while the power meter is ready, double some of the players stats for a limited time 
     public void PowerMeterComplete()
     {
+        unlockableText.text = "PowerMeter Complete";
+        unlockableText2.text = "press E to double your attack damage and speed ";
+        StartCoroutine(HideText());
+
         if (Input.GetKeyDown(KeyCode.E))
         {
+           
 
             damage = damage * 2;
 
             damageAddition = damageAddition * 2;
 
-            healthManager.currentHealth = healthManager.currentHealth * 2;
+            minMoveSpeed = 14f;
+            maxMoveSpeed = 16.5f;
+
+            powerMeterParticleActive = true;
+
+
+
 
             powerMeter.SetMinHealth(Convert.ToInt32(powerMeter.slider.minValue));
 
@@ -342,14 +373,24 @@ public class PlayerController : MonoBehaviour
 
         damageAddition = damageAddition / 2;
 
+        minMoveSpeed = 10f;
+        maxMoveSpeed = 12.5f;
+
         healthManager.currentHealth = healthManager.currentHealth / 2;
+
+        unlockableText.text = "PowerMeter depleted";
+        unlockableText2.text = "";
+        StartCoroutine(HideText());
+
+        powerMeterParticleActive = false;
 
         //material change
     }
 
+    //clear the text after 5 seconds
     public IEnumerator HideText()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(5f);
         unlockableText.text = "";
         unlockableText2.text = "";
     }
@@ -357,13 +398,14 @@ public class PlayerController : MonoBehaviour
     void OnTriggerEnter(Collider collision)
     {
 
-        // if the player is collding with unlockable platforms, then enable the unlockable abilities, display text for a limited time and destroy the key model ontop of it
+        // if the player is collding with unlockable platforms, then enable the unlockable abilities, play the unlockable sound display text for a limited time and destroy the key model ontop of it
         if (collision.gameObject.name == "Unlockable1")
         {
             unlockable1 = true;
             Destroy(GameObject.Find("KeyModel1"));
             unlockableText.text = "You found the 'Rocket boots!'";
             unlockableText2.text = "you can now perform a double jump\nby pressing space while in mid-air";
+            soundUnlockable.Play();
             StartCoroutine(HideText());
         }
 
@@ -373,6 +415,7 @@ public class PlayerController : MonoBehaviour
             Destroy(GameObject.Find("KeyModel2"));
             unlockableText.text = "You found the 'Stun Slash!'";
             unlockableText2.text = "When close enough to an enemy \nyou can now press mouse2 to stun them";
+            soundUnlockable.Play();
             StartCoroutine(HideText());
         }
 
@@ -382,6 +425,7 @@ public class PlayerController : MonoBehaviour
             Destroy(GameObject.Find("KeyModel3"));
             unlockableText.text = "You found the 'PowerStone!'";
             unlockableText2.text = "your powermeter will now last longer'";
+            soundUnlockable.Play();
             StartCoroutine(HideText());
         }
 
@@ -391,6 +435,7 @@ public class PlayerController : MonoBehaviour
             Destroy(GameObject.Find("KeyModel4"));
             unlockableText.text = "You found the 'SpeedGlove!'";
             unlockableText2.text = "you will now attack enemies faster";
+            soundUnlockable.Play();
             StartCoroutine(HideText());
         }
 
@@ -400,6 +445,7 @@ public class PlayerController : MonoBehaviour
             Destroy(GameObject.Find("KeyModel5"));
             unlockableText.text = "You found the 'GroundPound!'";
             unlockableText2.text = "you can now quickly move back to the ground \nwhile in mid-air and break wooden platforms";
+            soundUnlockable.Play();
             StartCoroutine(HideText());
         }
 
@@ -448,7 +494,7 @@ public class PlayerController : MonoBehaviour
             //if the attack timer is ready and the left mouse button is pressed, damage the enemy and then count make the nextAttackTime counter restart
             if (Time.time >= nextAttackTime && Input.GetKeyDown(KeyCode.Mouse0))
             {
-
+                soundAttack3.Play();
                 //soundAttack1.Play();
                 enemy1.TakeDamage();
 

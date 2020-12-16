@@ -41,6 +41,8 @@ public class Enemy1 : MonoBehaviour
     public GameObject powerOrb;
     private int orbCount;
     public int orbDropAmount;
+
+    public AudioSource soundHurtPlayer;
     //public float projectileDelayTime;
 
     //public int minHealth;
@@ -58,6 +60,8 @@ public class Enemy1 : MonoBehaviour
         {
             agent.speed = speed;
         }
+
+        
 
     }
 
@@ -216,7 +220,7 @@ public class Enemy1 : MonoBehaviour
 
                 FindObjectOfType<HealthManager>().HurtPlayer(damageToGive, hitDirection);
                 gameManager.AddPoints(pointsToGive);
-
+                soundHurtPlayer.Play();
                 nextAttackTime = Time.time + 1f / attackRate;
 
                 attackDelay = Time.time + attackDelayTime;

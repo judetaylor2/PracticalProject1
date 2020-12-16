@@ -10,9 +10,17 @@ public class Switch : MonoBehaviour
     public bool switchOn;
     public List<GameObject> switchObjects;
 
+    public Renderer theRenderer;
+
+    public Material colourRed;
+    public Material colourGreen;
+
+    //private bool timerCheck;
+
     void Start()
     {
         //set values
+        theRenderer.material = colourRed;
     }
 
     void Update()
@@ -33,6 +41,17 @@ public class Switch : MonoBehaviour
                 theObject.SetActive(switchOn); // uses switchOn's true or false value
             }
         }*/
+
+        if (switchOn)
+        {
+            //switchOn = false;
+            theRenderer.material = colourGreen;
+        }
+        else if (!switchOn)
+        {
+            //switchOn = true;
+            theRenderer.material = colourRed;
+        }
 
         if (switchOn)
         {
@@ -57,26 +76,36 @@ public class Switch : MonoBehaviour
     {
         if(col.gameObject.tag == "Player")
         {
-            /*if(switchOn)
+
+
+            if (switchOn)
             {
                 switchOn = false;
             }
-            else
+            else if (!switchOn)
             {
                 switchOn = true;
-            }*/
+            }
+
 
             foreach (GameObject theObject in switchObjects)
             {
                 if (switchOn)
                 {
                     theObject.SetActive(!theObject.active);
+                    
 
                 }
                 else if (!switchOn)
                 {
                     theObject.SetActive(!theObject.active);
+                    
                 }
+                /*else if (timerCheck)
+                {
+                    theObject.SetActive(!theObject.active);
+                    timerCheck = false;
+                }*/
 
             }
 
@@ -86,6 +115,13 @@ public class Switch : MonoBehaviour
     //when called, the switch is false. CancelInvoke stops the invoke from repeating the other way around
     public void SetToFalse()
     {
+        foreach (GameObject theObject in switchObjects)
+        {
+
+                theObject.SetActive(!theObject.active);
+
+        }
+
         switchOn = false;
         CancelInvoke();
     }
