@@ -46,11 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeba48c4ddf317546aaaa5f8dbf853b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 5
-  PointsToGive: 3
-  pickupEffect: {fileID: 5641449234714525879, guid: 6883ddf20780be94ea2222c221b31edf,
-    type: 3}
-  powerMeter: {fileID: 0}
   player: {fileID: 0}
   target: {fileID: 0}
   followSpeed: 3.2
@@ -212,8 +207,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25924367765875a42a3116c755d745d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 0
-  PointsToGive: 0
+  value: 4
+  PointsToGive: 10
   powerMeter: {fileID: 0}
   player: {fileID: 0}
   soundCollectOrb: {fileID: 6742634012402491431}

@@ -46,6 +46,8 @@ public class HealthManager : MonoBehaviour
         //thePlayer = FindObjectOfType<PlayerController>();
 
         respawnPoint = thePlayer.transform.position;
+
+        blackScreen.enabled = false;
     }
 
     // Update is called once per frame
@@ -73,6 +75,7 @@ public class HealthManager : MonoBehaviour
 
         if(isFadeToBlack)
         {
+            blackScreen.enabled = true; 
             blackScreen.color = new Color(blackScreen.color.r, blackScreen.color.g, blackScreen.color.b, Mathf.MoveTowards(blackScreen.color.a, 1f, fadeSpeed * Time.deltaTime));
             if (blackScreen.color.a == 1f)
             {
@@ -82,6 +85,7 @@ public class HealthManager : MonoBehaviour
 
         if (isFadeFromBlack)
         {
+            blackScreen.enabled = true;
             blackScreen.color = new Color(blackScreen.color.r, blackScreen.color.g, blackScreen.color.b, Mathf.MoveTowards(blackScreen.color.a, 0f, fadeSpeed * Time.deltaTime));
             if (blackScreen.color.a == 0f)
             {

@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43452de74a96ec341a0ec8454c69d4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 0
-  PointsToGive: 0
+  value: 1
+  PointsToGive: 25
   powerMeter: {fileID: 0}
   soundCollectGold: {fileID: 551767858730368048}
   collect: 0
@@ -293,12 +293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe387d6c559718a408677fbcabc447d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 1
-  PointsToGive: 10
-  pickupEffect: {fileID: 3606314579831137431, guid: cf25fe77d2df2e14884eac9cb343f071,
-    type: 3}
-  gameManager: {fileID: 0}
-  healthManager: {fileID: 0}
   player: {fileID: 0}
   target: {fileID: 0}
   followSpeed: 2.5

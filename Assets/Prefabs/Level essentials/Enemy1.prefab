@@ -63,9 +63,9 @@ MonoBehaviour:
   powerMeter: {fileID: 0}
   gameManager: {fileID: 0}
   maxHealth: 15
-  damageToGive: 2
+  damageToGive: 1
   attackRate: 1
-  attackDelayTime: 0.2
+  attackDelayTime: 0.5
   bullet: {fileID: 0}
   usingProjectiles: 0
   speed: 10

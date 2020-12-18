@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
     public float powerMeterDuration;
     public float maxPowerMeterDuration;
     public float minPowerMeterDuration;
+    private int powerMeterCount;
 
     //Crate
     public Crate crate;
@@ -339,9 +340,17 @@ public class PlayerController : MonoBehaviour
     //if the 'e' key is pressed while the power meter is ready, double some of the players stats for a limited time 
     public void PowerMeterComplete()
     {
-        unlockableText.text = "PowerMeter Complete";
-        unlockableText2.text = "press E to double your attack damage and speed ";
-        StartCoroutine(HideText());
+        if (powerMeterCount < 1)
+        {
+            powerMeterCount = 1;
+            unlockableText.enabled = true;
+            unlockableText2.enabled = true;
+
+            unlockableText.text = "PowerMeter Complete";
+            unlockableText2.text = "press E to double your attack damage and speed ";
+            StartCoroutine(HideText());
+        }
+        
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -369,6 +378,8 @@ public class PlayerController : MonoBehaviour
 
     public void StopPowerMeter() // change damage back to defaults after the power meter stat boost has expired
     {
+        powerMeterCount = 0;
+
         damage = damage / 2;
 
         damageAddition = damageAddition / 2;
@@ -378,6 +389,9 @@ public class PlayerController : MonoBehaviour
 
         healthManager.currentHealth = healthManager.currentHealth / 2;
 
+        unlockableText.enabled = true;
+        unlockableText2.enabled = true;
+        
         unlockableText.text = "PowerMeter depleted";
         unlockableText2.text = "";
         StartCoroutine(HideText());
@@ -391,8 +405,8 @@ public class PlayerController : MonoBehaviour
     public IEnumerator HideText()
     {
         yield return new WaitForSeconds(5f);
-        unlockableText.text = "";
-        unlockableText2.text = "";
+        unlockableText.enabled = false;
+        unlockableText2.enabled = false;
     }
 
     void OnTriggerEnter(Collider collision)
@@ -402,6 +416,10 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.name == "Unlockable1")
         {
             unlockable1 = true;
+
+            unlockableText.enabled = true;
+            unlockableText2.enabled = true;
+
             Destroy(GameObject.Find("KeyModel1"));
             unlockableText.text = "You found the 'Rocket boots!'";
             unlockableText2.text = "you can now perform a double jump\nby pressing space while in mid-air";
@@ -412,6 +430,10 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.name == "Unlockable2")
         {
             stunSlash = true;
+
+            unlockableText.enabled = true;
+            unlockableText2.enabled = true;
+
             Destroy(GameObject.Find("KeyModel2"));
             unlockableText.text = "You found the 'Stun Slash!'";
             unlockableText2.text = "When close enough to an enemy \nyou can now press mouse2 to stun them";
@@ -422,6 +444,10 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.name == "Unlockable3")
         {
             PowerStone = true;
+
+            unlockableText.enabled = true;
+            unlockableText2.enabled = true;
+
             Destroy(GameObject.Find("KeyModel3"));
             unlockableText.text = "You found the 'PowerStone!'";
             unlockableText2.text = "your powermeter will now last longer'";
@@ -432,6 +458,10 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.name == "Unlockable4")
         {
             speedGlove = true;
+
+            unlockableText.enabled = true;
+            unlockableText2.enabled = true;
+
             Destroy(GameObject.Find("KeyModel4"));
             unlockableText.text = "You found the 'SpeedGlove!'";
             unlockableText2.text = "you will now attack enemies faster";
@@ -442,6 +472,10 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.name == "Unlockable5")
         {
             groundPound = true;
+
+            unlockableText.enabled = true;
+            unlockableText2.enabled = true;
+
             Destroy(GameObject.Find("KeyModel5"));
             unlockableText.text = "You found the 'GroundPound!'";
             unlockableText2.text = "you can now quickly move back to the ground \nwhile in mid-air and break wooden platforms";

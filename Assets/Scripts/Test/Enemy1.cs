@@ -141,9 +141,11 @@ public class Enemy1 : MonoBehaviour
 
         if (enemyHealth <= 0)
         {
-            Destroy(gameObject);
-            Instantiate(coin, transform.position, transform.rotation);
             
+            gameManager.AddPoints(pointsToGive);
+            Instantiate(coin, transform.position, transform.rotation);
+            Destroy(gameObject);
+
             while (orbCount < orbDropAmount)
             {
                 Instantiate(powerOrb, transform.position, transform.rotation);
@@ -188,7 +190,7 @@ public class Enemy1 : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        nextAttackTime = Time.time + 1f / attackRate;
+        nextAttackTime = Time.time + 0.5f / attackRate;
 
         stopShooting = true;
 
@@ -201,7 +203,7 @@ public class Enemy1 : MonoBehaviour
         {
             if(player.enemyStuned)
             {
-                attackDelayTime = 4f;
+                attackDelayTime = 2f;
 
                 if (Time.time >= attackDelay)
                 {
@@ -219,7 +221,7 @@ public class Enemy1 : MonoBehaviour
                 hitDirection = hitDirection.normalized;
 
                 FindObjectOfType<HealthManager>().HurtPlayer(damageToGive, hitDirection);
-                gameManager.AddPoints(pointsToGive);
+                
                 soundHurtPlayer.Play();
                 nextAttackTime = Time.time + 1f / attackRate;
 
